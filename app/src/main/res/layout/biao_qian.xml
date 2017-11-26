@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/back_mohu"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:text="@string/LableText"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+    <CheckBox
+        android:id="@+id/MeiWen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="33sp"
+        android:textColor="#FFFFFF"
+        style="@style/check_box"
+        android:text="@string/LableText_MeiWen"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="115dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
+
+    <CheckBox
+        android:id="@+id/QinGan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="33sp"
+        android:textColor="#FFFFFF"
+        style="@style/check_box"
+        android:text="@string/LableText_QinGan"
+        android:layout_below="@+id/MeiWen"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp" />
+
+    <CheckBox
+        android:id="@+id/ZhenTan"
+        style="@style/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/QinGan"
+        android:layout_below="@+id/LiShi"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/LableText_ZhenTan"
+        android:textColor="#FFFFFF"
+        android:textSize="33sp" />
+
+    <CheckBox
+        android:id="@+id/LiShi"
+        style="@style/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/QinGan"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/LiZhi"
+        android:text="@string/LableText_LiShi"
+        android:textColor="#FFFFFF"
+        android:textSize="33sp" />
+
+    <CheckBox
+        android:id="@+id/LiZhi"
+        style="@style/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ZhenTan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:text="@string/LableText_LiZhi"
+        android:textColor="#FFFFFF"
+        android:textSize="33sp" />
+
+    <!--<CheckBox-->
+        <!--android:id="@+id/JiShi"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="33sp"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--style="@style/check_box"-->
+        <!--android:text="@string/LableText_JiShi"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_alignTop="@+id/QinGan"-->
+        <!--android:layout_alignEnd="@+id/textView2"-->
+        <!--android:layout_marginEnd="14dp" />-->
+
+    <CheckBox
+        android:id="@+id/YouMo"
+        style="@style/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ZhenTan"
+        android:layout_alignBottom="@+id/ZhenTan"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginEnd="15dp"
+        android:text="@string/LableText_YouMo"
+        android:textColor="#FFFFFF"
+        android:textSize="33sp" />
+
+    <Button
+        android:id="@+id/Next2"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
+        android:layout_below="@+id/LiZhi"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:background="@mipmap/button1"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/MeiWen"
+        android:layout_below="@+id/Next2"
+        android:layout_marginTop="11dp"
+        android:gravity="center_vertical"
+        android:text="@string/LableText_HuanYin"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+</RelativeLayout>
