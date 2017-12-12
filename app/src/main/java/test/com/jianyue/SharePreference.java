@@ -64,6 +64,45 @@ public class SharePreference {
         editor.putBoolean("YouMoChecked", true);
         editor.commit();
     }
+    //设置背景颜色的单选框为真
+    public void setWhiteTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("WhiteChecked", true);
+        editor.commit();
+    }
+    public void setGreenTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("GreenChecked", true);
+        editor.commit();
+    }
+    public void setYellowTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("YellowChecked", true);
+        editor.commit();
+    }
+    public void setPinkTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("PinkChecked", true);
+        editor.commit();
+    }
+    //设置夜间模式开关为真
+    public void setNightTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("NightChecked", true);
+        editor.commit();
+    }
+    //设置字号
+    public void setSize(int i){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("Size",i);
+        editor.commit();
+    }
 
 
     //设置复选框标签为false，即未选中
@@ -103,7 +142,38 @@ public class SharePreference {
         editor.putBoolean("YouMoChecked", false);
         editor.commit();
     }
-
+    //设置背景颜色的单选框为假
+    public void setWhiteFalse(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("WhiteChecked", false);
+        editor.commit();
+    }
+    public void setGreenFalse(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("GreenChecked", false);
+        editor.commit();
+    }
+    public void setYellowFalse(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("YellowChecked", false);
+        editor.commit();
+    }
+    public void setPinkFalse(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("PinkChecked", false);
+        editor.commit();
+    }
+    //设置夜间模式开关为真
+    public void setNightFalse(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("NightChecked", false);
+        editor.commit();
+    }
 
     /***获取状态***/
     public boolean getState()
@@ -147,6 +217,44 @@ public class SharePreference {
     {
         SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
         boolean b = sp.getBoolean("YouMoChecked", false);
+        return b;
+    }
+    //获取背景颜色
+    public boolean getWhite()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("WhiteChecked", false);
+        return b;
+    }
+    public boolean getGreen()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("GreenChecked", false);
+        return b;
+    }
+    public boolean getYellow()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("YellowChecked", false);
+        return b;
+    }
+    public boolean getPink()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("PinkChecked", false);
+        return b;
+    }
+    //获取夜间模式开关状态
+    public boolean getNight()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("NightChecked", false);
+        return b;
+    }
+    //获取字号大小
+    public int getSize(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        int b=sp.getInt("Size",1);
         return b;
     }
 

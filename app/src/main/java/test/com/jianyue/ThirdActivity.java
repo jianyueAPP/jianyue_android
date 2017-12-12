@@ -109,17 +109,26 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
-
         //next2按钮功能，调到阅读器主体界面
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 SharePreference sp=new SharePreference(ThirdActivity.this);
-                sp.setState();  //将登陆状态设置为true;
+                sp.setState();  //将登陆状态设置为true
+                init(); //初始化后面所用到的按键状态
                 Intent intent=new Intent(ThirdActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+    }
+
+    //初始化后面所用到的按键状态
+    public void init(){
+        SharePreference sp=new SharePreference(ThirdActivity.this);
+        sp.setYellowTrue();
+        sp.setWhiteFalse();
+        sp.setGreenFalse();
+        sp.setPinkFalse();
     }
 }
