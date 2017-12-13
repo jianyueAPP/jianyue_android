@@ -1,4 +1,4 @@
-//底栏布局
+//底栏布局,三个按键
 package test.com.jianyue;
 
 import android.app.DialogFragment;
@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class Bottom_Dialog extends DialogFragment {
     public static final String DIALOG_TAG_2 = "dialog2";
     View dialogView;//底栏的对象
     ImageButton bt_adjustBackground,bt_more;
+    CheckBox bt_like;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
@@ -59,6 +62,7 @@ public class Bottom_Dialog extends DialogFragment {
         //绑定底栏按键
         bt_adjustBackground=dialogView.findViewById(R.id.bt_adjust_background);
         bt_more=dialogView.findViewById(R.id.bt_more);
+        bt_like=dialogView.findViewById(R.id.bt_like);
         //点击换背景按钮
         bt_adjustBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +71,18 @@ public class Bottom_Dialog extends DialogFragment {
                 startDownAnimation(dialogView);
                 //唤醒设置背景字号对话框
                 Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+            }
+        });
+        //点击收藏按钮
+        bt_like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Toast.makeText(Bottom_Dialog.this.getActivity(), "已收藏", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(Bottom_Dialog.this.getActivity(), "取消收藏", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //点击更多按钮
