@@ -6,6 +6,7 @@
         android:id="@+id/flash"
         android:icon="@drawable/ic_flash"
         android:title="@string/flash"
-        app:showAsAction="always"></item>
+        app:showAsAction="always">
+    </item>
 
 </menu>

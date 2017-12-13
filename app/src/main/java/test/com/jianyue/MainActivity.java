@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.tag);//把标签按钮绑定
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把标签按钮绑定
         }
         set_checkout();
 
@@ -394,31 +394,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             jsonTags = gson.toJson("QinGan");
         }
     }*/
-/*
+
+    /*
      * *在onTouch()方法中，我们调用GestureDetector的onTouchEvent()方法，
      * 将捕捉到的MotionEvent交给GestureDetector * 来分析是否有合适的callback函数来处理用户的手势
      */
 
     public boolean onTouch(View v, MotionEvent event)
-
     {
-
         return mGestureDetector.onTouchEvent(event);
-
     }
 
     // 用户轻触触摸屏，由1个MotionEvent ACTION_DOWN触发
 
     public boolean onDown(MotionEvent arg0)
-
     {
-
         Log.i("MyGesture", "onDown");
-
         //Toast.makeText(this, "onDown", Toast.LENGTH_SHORT).show();
-
         return true;
-
     }
 
     /*
@@ -427,72 +420,45 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
      */
 
     public void onShowPress(MotionEvent e)
-
     {
-
         Log.i("MyGesture", "onShowPress");
-
         //Toast.makeText(this, "onShowPress", Toast.LENGTH_SHORT).show();
-
     }
 
     // 用户（轻触触摸屏后）松开，由一个1个MotionEvent ACTION_UP触发
 
     public boolean onSingleTapUp(MotionEvent e)
-
     {
-
         Log.i("MyGesture", "onSingleTapUp");
-
         //Toast.makeText(this, "onSingleTapUp", Toast.LENGTH_SHORT).show();
-
         Bottom_Dialog.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
-
         return true;
-
     }
 
     // 用户按下触摸屏、快速移动后松开，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE, 1个ACTION_UP触发
 
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                           float velocityY)
-
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
     {
-
         Log.i("MyGesture", "onFling");
-
         //Toast.makeText(this, "onFling", Toast.LENGTH_LONG).show();
-
         return true;
-
     }
 
     // 用户按下触摸屏，并拖动，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE触发
 
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-                            float distanceY)
-
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
     {
-
         Log.i("MyGesture", "onScroll");
-
        // Toast.makeText(this, "onScroll", Toast.LENGTH_LONG).show();
-
         return true;
-
     }
 
     // 用户长按触摸屏，由多个MotionEvent ACTION_DOWN触发
 
     public void onLongPress(MotionEvent e)
-
     {
-
         Log.i("MyGesture", "onLongPress");
-
         //Toast.makeText(this, "onLongPress", Toast.LENGTH_LONG).show();
-
     }
-
 
 }

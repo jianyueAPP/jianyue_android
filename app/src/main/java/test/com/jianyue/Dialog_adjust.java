@@ -63,7 +63,7 @@ public class Dialog_adjust extends DialogFragment {
         // 不显示标题栏
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         //布局实例化
-        final View dialogView = inflater.inflate(R.layout.dialog, container, false);
+        final View dialogView = inflater.inflate(R.layout.adjust_dialog, container, false);
 
         //字体大小选择框
         bt_size = dialogView.findViewById(R.id.switchmultibutton);
@@ -114,27 +114,6 @@ public class Dialog_adjust extends DialogFragment {
         slide.setDuration(400);
         slide.setFillAfter(true);
         slide.setFillEnabled(true);
-        view.startAnimation(slide);
-    }
-
-    //关闭动画
-    private void startDownAnimation(View view) {
-        Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-        slide.setDuration(400);
-        slide.setFillAfter(true);
-        slide.setFillEnabled(true);
-        slide.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                dismiss();
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
         view.startAnimation(slide);
     }
 
