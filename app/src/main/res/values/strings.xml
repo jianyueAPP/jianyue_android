@@ -17,4 +17,7 @@
     <string name="ZiHao">字号</string>
     <string name="BeiJin">背景</string>
     <string name="YeJian">夜间</string>
+    <string name="share">分享</string>
+    <string name="favorite">收藏夹</string>
+    <string name="suggest">意见反馈</string>
 </resources>

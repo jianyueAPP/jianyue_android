@@ -1,3 +1,4 @@
+//底栏布局
 package test.com.jianyue;
 
 import android.app.DialogFragment;
@@ -29,7 +30,7 @@ public class Bottom_Dialog extends DialogFragment {
     private static final String TAG = "Bottom_Dialog";
     public static final String DIALOG_TAG_2 = "dialog2";
     View dialogView;//底栏的对象
-    ImageButton bt_adjustBackground;
+    ImageButton bt_adjustBackground,bt_more;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
@@ -38,15 +39,12 @@ public class Bottom_Dialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
         Log.i(TAG, "onStart: ");
-
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.gravity = Gravity.BOTTOM; // 显示在底部
         params.width = WindowManager.LayoutParams.MATCH_PARENT; // 宽度填充满屏
         window.setAttributes(params);
-
         // 这里用透明颜色替换掉系统自带背景
         int color = ContextCompat.getColor(getActivity(), android.R.color.transparent);
         window.setBackgroundDrawable(new ColorDrawable(color));
@@ -55,59 +53,63 @@ public class Bottom_Dialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         Log.i(TAG, "onCreateView: ");
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); // 不显示标题栏
-
         dialogView = inflater.inflate(R.layout.bottom_dialog, container, false);
         //绑定底栏按键
         bt_adjustBackground=dialogView.findViewById(R.id.bt_adjust_background);
+        bt_more=dialogView.findViewById(R.id.bt_more);
+        //点击换背景按钮
         bt_adjustBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //关闭底栏
+                startDownAnimation(dialogView);
+                //唤醒设置背景字号对话框
                 Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
             }
         });
-
+        //点击更多按钮
+        bt_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //关闭底栏
+                startDownAnimation(dialogView);
+                //唤醒更多对话框
+                Dialog_more.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+            }
+        });
+        //开启动画
         startUpAnimation(dialogView);
-
         return dialogView;
     }
-
+    //开启动画
     private void startUpAnimation(View view) {
         Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-
-        slide.setDuration(400);
+        slide.setDuration(400);//动画时间
         slide.setFillAfter(true);
         slide.setFillEnabled(true);
         view.startAnimation(slide);
     }
-
+    //关闭动画
     private void startDownAnimation(View view) {
         Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-
         slide.setDuration(400);
         slide.setFillAfter(true);
         slide.setFillEnabled(true);
         slide.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+            public void onAnimationStart(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
                 dismiss();
             }
-
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         view.startAnimation(slide);
     }
