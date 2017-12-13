@@ -11,8 +11,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -25,7 +27,6 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
 
     /**test**/
     
@@ -71,28 +72,48 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @BindView(R.id.scrollView)
-    ScrollView scrollView;
     @BindView(R.id.textView)
     TextView textView;
     private DrawerLayout mDrawerLayout;
+    private ScrollView scorollview;
+
+    private GestureDetector mGestureDetector;
+    public MainActivity()
+
+    {
+
+        mGestureDetector = new GestureDetector(this);
+
+    }
+    public static final String DIALOG_TAG_2 = "dialog2";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //开启一个线程，做联网操作
 
-
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);//toolbar导入
+        Toolbar toolbar = findViewById(R.id.toolbar);//toolbar导入
         setSupportActionBar(toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        scorollview=findViewById(R.id.scrollView);
+        scorollview.setOnTouchListener(this);
+        //scorollview.setFocusable(true);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.tag);//把标签按钮绑定
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把标签按钮绑定
         }
         set_checkout();
+
+//        //底部弹窗
+//        Button button1 = (Button) findViewById(R.id.button1);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+//            }
+//        });
     }
 
     /*private void postJson() {
@@ -174,13 +195,14 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-
-    public boolean onCreateOptionsMenu(Menu menu) {//加载toolbar布局
+    //加载toolbar布局
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {//处理toolbar点击事件
+    //处理toolbar点击事件
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home://侧边栏
                 mDrawerLayout.openDrawer(GravityCompat.START);
@@ -334,11 +356,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.YouMo1:
                 break;
-
             case R.id.drawer_layout:
                 break;
             case R.id.scrollView:
-                //Toast.makeText(MainActivity.this, "scr", Toast.LENGTH_SHORT);
                 break;
             case R.id.textView:
                 //Toast.makeText(MainActivity.this, "papapa", Toast.LENGTH_SHORT).show();
@@ -375,6 +395,70 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
+    /*
+     * *在onTouch()方法中，我们调用GestureDetector的onTouchEvent()方法，
+     * 将捕捉到的MotionEvent交给GestureDetector * 来分析是否有合适的callback函数来处理用户的手势
+     */
 
+    public boolean onTouch(View v, MotionEvent event)
+    {
+        return mGestureDetector.onTouchEvent(event);
+    }
+
+    // 用户轻触触摸屏，由1个MotionEvent ACTION_DOWN触发
+
+    public boolean onDown(MotionEvent arg0)
+    {
+        Log.i("MyGesture", "onDown");
+        //Toast.makeText(this, "onDown", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    /*
+     * * 用户轻触触摸屏，尚未松开或拖动，由一个1个MotionEvent ACTION_DOWN触发 *
+     * 注意和onDown()的区别，强调的是没有松开或者拖动的状态
+     */
+
+    public void onShowPress(MotionEvent e)
+    {
+        Log.i("MyGesture", "onShowPress");
+        //Toast.makeText(this, "onShowPress", Toast.LENGTH_SHORT).show();
+    }
+
+    // 用户（轻触触摸屏后）松开，由一个1个MotionEvent ACTION_UP触发
+
+    public boolean onSingleTapUp(MotionEvent e)
+    {
+        Log.i("MyGesture", "onSingleTapUp");
+        //Toast.makeText(this, "onSingleTapUp", Toast.LENGTH_SHORT).show();
+        Bottom_Dialog.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+        return true;
+    }
+
+    // 用户按下触摸屏、快速移动后松开，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE, 1个ACTION_UP触发
+
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+    {
+        Log.i("MyGesture", "onFling");
+        //Toast.makeText(this, "onFling", Toast.LENGTH_LONG).show();
+        return true;
+    }
+
+    // 用户按下触摸屏，并拖动，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE触发
+
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+    {
+        Log.i("MyGesture", "onScroll");
+       // Toast.makeText(this, "onScroll", Toast.LENGTH_LONG).show();
+        return true;
+    }
+
+    // 用户长按触摸屏，由多个MotionEvent ACTION_DOWN触发
+
+    public void onLongPress(MotionEvent e)
+    {
+        Log.i("MyGesture", "onLongPress");
+        //Toast.makeText(this, "onLongPress", Toast.LENGTH_LONG).show();
+    }
 
 }
