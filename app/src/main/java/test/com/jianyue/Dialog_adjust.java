@@ -1,4 +1,4 @@
-//设置背景字号对话框
+//设置背景字号菜单
 
 package test.com.jianyue;
 

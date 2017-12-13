@@ -1,4 +1,4 @@
-//底栏布局
+//底栏布局,三个按键
 package test.com.jianyue;
 
 import android.app.DialogFragment;
