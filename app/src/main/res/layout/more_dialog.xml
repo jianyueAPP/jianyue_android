@@ -12,25 +12,25 @@
         android:layout_height="55sp"
         android:background="#FFFFFF"
         android:text="@string/share"
-        android:textSize="24sp"/>
+        android:textSize="22sp"/>
     <Button
         android:id="@+id/favorite"
         android:layout_width="match_parent"
         android:layout_height="55sp"
         android:background="#FFFFFF"
         android:text="@string/favorite"
-        android:textSize="24sp"/>
+        android:textSize="22sp"/>
     <Button
         android:id="@+id/suggest"
         android:layout_width="match_parent"
         android:layout_height="55sp"
         android:background="#FFFFFF"
         android:text="@string/suggest"
-        android:textSize="24sp"/>
+        android:textSize="22sp"/>
     <Button
         android:id="@+id/none"
         android:layout_width="match_parent"
-        android:layout_height="12sp"
+        android:layout_height="13sp"
         android:background="#FFFFFF" />
 
 </LinearLayout>

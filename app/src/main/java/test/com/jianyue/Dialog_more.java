@@ -67,5 +67,24 @@ public class Dialog_more extends DialogFragment {
         slide.setFillEnabled(true);
         view.startAnimation(slide);
     }
-
+    //关闭动画
+    private void startDownAnimation(View view) {
+        Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+        slide.setDuration(400);
+        slide.setFillAfter(true);
+        slide.setFillEnabled(true);
+        slide.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                dismiss();
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        view.startAnimation(slide);
+    }
 }
