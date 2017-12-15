@@ -407,33 +407,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*public String getTag() {
-        Gson gson = new Gson();
-        SharePreference sp = new SharePreference(MainActivity.this);
-        if( sp.getGuWen() ) {
-            jsonTags = gson.toJson("GuWen");
-        }
 
-        if( sp.getLiZhi() ) {
-            jsonTags = gson.toJson("Jishi");
-        }
-
-        if( sp.getYouMo() ) {
-            jsonTags = gson.toJson("YouMo");
-        }
-
-        if( sp.getLiShi() ) {
-            jsonTags = gson.toJson("LiShi");
-        }
-
-        if( sp.getZhenTan() ) {
-            jsonTags = gson.toJson("ZhenTan");
-        }
-
-        if( sp.getQinGan() ) {
-            jsonTags = gson.toJson("QinGan");
-        }
-    }*/
     //初始化样式
     public void init(){
         SharePreference sp = new SharePreference(MainActivity.this);
