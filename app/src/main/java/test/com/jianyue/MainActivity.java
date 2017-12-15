@@ -3,7 +3,6 @@
 package test.com.jianyue;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,20 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private TextView bt_settings;
     Toolbar toolbar;
+    ActionBar actionBar;
     public float textSize=7;
 
     public static final String DIALOG_TAG_2 = "dialog2";
@@ -108,10 +101,27 @@ public class MainActivity extends AppCompatActivity {
         bt_settings=findViewById(R.id.setting);
         toolbar = findViewById(R.id.toolbar);//toolbar导入
         setSupportActionBar(toolbar);//toolbar绑定为actionbar
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
+        SharePreference sp = new SharePreference(MainActivity.this);
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把返回键和标签按钮绑定
+            if(sp.getNight()){
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_tagnight);
+            }
+            else{
+                if(sp.getWhite()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);//把返回键和标签按钮绑定
+                }
+                else if(sp.getGreen()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
+                }
+                else if(sp.getYellow()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
+                }
+                else if(sp.getPink()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
+                }
+            }
         }
         //初始化样式
         init();
@@ -162,30 +172,35 @@ public class MainActivity extends AppCompatActivity {
             textView.setTextColor(Color.parseColor("#333333"));
             toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
             toolbar.setTitleTextColor(Color.parseColor("#333333"));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);
         }
         else if(i == 1) {           // green
             textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
             textView.setTextColor(Color.parseColor("#709a7b"));
             toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
             toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
         }
         else if(i == 2) {           // yellow
             textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
             textView.setTextColor(Color.parseColor("#b88940"));
             toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
             toolbar.setTitleTextColor(Color.parseColor("#b88940"));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
         }
         else if(i == 3) {           // pink
             textView.setBackgroundColor(Color.parseColor("#fff6ef"));
             textView.setTextColor(Color.parseColor("#db7d6d"));
             toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
             toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
         }
         else if(i == 4) {           // night
             textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
             textView.setTextColor(Color.parseColor("#5b5952"));
             toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
             toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tagnight);
         }
     }
 

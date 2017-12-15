@@ -191,7 +191,9 @@ public class Dialog_adjust extends DialogFragment {
                         xxxlistener.color(3);
                     }
                 }
-                bt_night.setOn(false);//关闭夜间模式开关
+                if(!sp1.getNight()){//如果夜间模式是关着的话
+                    bt_night.setOn(false);//关闭夜间模式开关
+                }
                 radio_selected=i;
             }
         });
