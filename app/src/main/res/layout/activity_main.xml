@@ -49,7 +49,7 @@
                     android:lineSpacingMultiplier = "1.5" />
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50sp"
+                    android:layout_height="48sp"
                     android:text=""/>
             </LinearLayout>
         </ScrollView>
