@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.MeiWen1)
     CheckBox MeiWen1;
     @BindView(R.id.QinGan1)
@@ -82,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView bt_settings;
+    Toolbar toolbar;
     public float textSize=7;
 
     public static final String DIALOG_TAG_2 = "dialog2";
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         scrollView=findViewById(R.id.scrollView);
         bt_settings=findViewById(R.id.setting);
-        Toolbar toolbar = findViewById(R.id.toolbar);//toolbar导入
+        toolbar = findViewById(R.id.toolbar);//toolbar导入
         setSupportActionBar(toolbar);//toolbar绑定为actionbar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -403,23 +401,33 @@ public class MainActivity extends AppCompatActivity {
         if(sp.getNight()){
             textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
             textView.setTextColor(Color.parseColor("#5b5952"));
+            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
         }
         else{
             if(sp.getWhite()){
                 textView.setBackgroundColor(Color.parseColor("#ffffff"));
                 textView.setTextColor(Color.parseColor("#333333"));
+                toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
+                toolbar.setTitleTextColor(Color.parseColor("#333333"));
             }
             if(sp.getGreen()){
                 textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
                 textView.setTextColor(Color.parseColor("#709a7b"));
+                toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
             }
             if(sp.getYellow()){
                 textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
                 textView.setTextColor(Color.parseColor("#b88940"));
+                toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                toolbar.setTitleTextColor(Color.parseColor("#b88940"));
             }
             if(sp.getPink()){
                 textView.setBackgroundColor(Color.parseColor("#fff6ef"));
                 textView.setTextColor(Color.parseColor("#db7d6d"));
+                toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
+                toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
             }
         }
         //设置文字大小
