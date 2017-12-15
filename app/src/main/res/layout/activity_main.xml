@@ -26,26 +26,27 @@
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="550sp"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintVertical_bias="0.0">
-
+            app:layout_constraintVertical_bias="0.0"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
+
 
     </android.support.constraint.ConstraintLayout >
 
@@ -140,7 +141,16 @@
             android:paddingLeft="120sp"
             style="@style/check_box"
             android:text="@string/LableText_LiZhi"
-            android:layout_marginBottom="80sp"/>
+            android:layout_marginBottom="10sp"/>
+        <TextView
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#171c21"
+            android:text="更多设置"
+            android:layout_marginLeft="60sp"
+            android:textSize="30sp" />
     </LinearLayout>
 
 
