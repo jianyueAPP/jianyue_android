@@ -44,7 +44,7 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10sp"
+                    android:paddingLeft="9sp"
                     android:paddingRight="7sp"
                     android:lineSpacingMultiplier = "1.5" />
                 <TextView
