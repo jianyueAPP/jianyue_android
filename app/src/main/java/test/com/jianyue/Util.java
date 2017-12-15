@@ -23,8 +23,6 @@ public class Util {
         //获取assets资源管理器
         AssetManager assetManager = mContext.getAssets();
         try {
-            //获取assets资源管理器
-            //AssetManager assetManager = mContext.getAssets();
             //通过管理器打开文件并读取
             BufferedReader bf = new BufferedReader(new InputStreamReader(
                     assetManager.open(fileName)));
