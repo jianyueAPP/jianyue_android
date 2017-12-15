@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
         //设置文字大小
         int i=sp.getSize();//获取字号
         if(i==0){
-            textSize=17;
+            textSize=17;//小号
         }
         else if(i==1){
             textSize=20;
