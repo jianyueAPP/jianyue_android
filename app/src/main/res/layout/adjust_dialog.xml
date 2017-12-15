@@ -32,7 +32,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
-            android:padding="14sp"
+            android:padding="16sp"
             app:selectedColor="#474a4d"
             app:selectedTab="1"
             app:strokeRadius="7sp"

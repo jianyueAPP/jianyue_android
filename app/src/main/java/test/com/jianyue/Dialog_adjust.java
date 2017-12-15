@@ -4,6 +4,7 @@ package test.com.jianyue;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.sevenheaven.iosswitch.ShSwitchView;
 
@@ -42,6 +44,8 @@ public class Dialog_adjust extends DialogFragment {
     ShSwitchView bt_night;
     SwitchMultiButton bt_size;
 
+    View dialogView;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -63,7 +67,7 @@ public class Dialog_adjust extends DialogFragment {
         // 不显示标题栏
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         //布局实例化
-        final View dialogView = inflater.inflate(R.layout.adjust_dialog, container, false);
+        dialogView = inflater.inflate(R.layout.adjust_dialog, container, false);
 
         //字体大小选择框
         bt_size = dialogView.findViewById(R.id.switchmultibutton);
@@ -152,12 +156,14 @@ public class Dialog_adjust extends DialogFragment {
                     sp1.setGreenTrue();
                     sp1.setYellowFalse();
                     sp1.setPinkFalse();
+                    //textView.setBackgroundColor(Color.parseColor("#8bdf72"));
                 }
                 if(R.id.bt_yellow==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenFalse();
                     sp1.setYellowTrue();
                     sp1.setPinkFalse();
+
                 }
                 if(R.id.bt_pink==i){
                     sp1.setWhiteFalse();
