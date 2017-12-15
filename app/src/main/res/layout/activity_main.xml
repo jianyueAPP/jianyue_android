@@ -43,15 +43,14 @@
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
-                    android:lineSpacingMultiplier = "1.5"
-                    android:paddingLeft="10sp"
-                    android:paddingRight="8sp"/>
+                    android:paddingLeft="9sp"
+                    android:paddingRight="7sp"
+                    android:lineSpacingMultiplier = "1.5" />
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50sp"
-                    android:text="nsud"/>
+                    android:layout_height="48sp"
+                    android:text=""/>
             </LinearLayout>
         </ScrollView>
 
