@@ -147,17 +147,35 @@ public class MainActivity extends AppCompatActivity {
 
     public void setColor(int i) {
         System.out.println("Color");
-        if(i == 0) {
-
+        if(i == 0) {                // white
+            textView.setBackgroundColor(Color.parseColor("#ffffff"));
+            textView.setTextColor(Color.parseColor("#333333"));
+            toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
+            toolbar.setTitleTextColor(Color.parseColor("#333333"));
         }
-        else if(i == 1) {
-
+        else if(i == 1) {           // green
+            textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            textView.setTextColor(Color.parseColor("#709a7b"));
+            toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
         }
-        else if(i == 2) {
-
+        else if(i == 2) {           // yellow
+            textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            textView.setTextColor(Color.parseColor("#b88940"));
+            toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            toolbar.setTitleTextColor(Color.parseColor("#b88940"));
         }
-        else if(i == 3) {
-
+        else if(i == 3) {           // pink
+            textView.setBackgroundColor(Color.parseColor("#fff6ef"));
+            textView.setTextColor(Color.parseColor("#db7d6d"));
+            toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
+            toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
+        }
+        else if(i == 4) {           // night
+            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textView.setTextColor(Color.parseColor("#5b5952"));
+            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
         }
     }
 
