@@ -2,6 +2,8 @@
 
 package test.com.jianyue;
 
+
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,11 +75,12 @@ public class MainActivity extends AppCompatActivity {
     CheckBox LiZhi1;
     @BindView(R.id.YouMo1)
     CheckBox YouMo1;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.textView)
     TextView textView;
+
+
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView bt_settings;
@@ -119,42 +122,78 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mDrawerLayout.closeDrawers();
-                Bottom_Dialog.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+                Dialog_adjust dialog_adjust = Dialog_adjust.newInstance();
+                dialog_adjust.setXxxlistener(new Dialog_adjust.xxxlistener() {
+                    @Override
+                    public void test(int i) {
+                        setsize(i);
+                    }
+                    public void color(int i) {
+                        setColor(i);
+                    }
+                });
+                Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
+                bottom_dialog.Init(dialog_adjust);
+                bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
             }
         });
 
     }
 
-    /*private void postJson() {
-        //申明给服务端传递一个json串
-        //创建一个OkHttpClient对象
-        OkHttpClient okHttpClient = new OkHttpClient();
-        //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
-        RequestBody requestBody = RequestBody.create(JSON , jsonTags);
-        //创建一个请求对象
-        Request request = new Request.Builder()
-                .url("http://192.168.155.1:8080/jianyue/getArtical.html?json={\"tag\":[\"aaa\",\"bbb\"]}")
-                .post(requestBody)
-                .build();
-
-        //发送请求获取响应
-        try {
-            Response response=okHttpClient.newCall(request).execute();
-            //判断请求是否成功
-            if(response.isSuccessful()){
-                //打印服务端返回结果
-                Log.i(TAG,response.body().string());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    // 改变字号
+    public void setsize(int i){
+        System.out.println("tests");
+        if(i == 0) {
+            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 45);
         }
+        else if(i == 1) {
+            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 55);
+        }
+        else if(i == 2) {
+            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 65);
+        }
+    }
 
-    }*/
 
+    public void setColor(int i) {
+        System.out.println("Color");
+        if(i == 0) {                // white
+            textView.setBackgroundColor(Color.parseColor("#ffffff"));
+            textView.setTextColor(Color.parseColor("#333333"));
+            toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
+            toolbar.setTitleTextColor(Color.parseColor("#333333"));
+        }
+        else if(i == 1) {           // green
+            textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            textView.setTextColor(Color.parseColor("#709a7b"));
+            toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
+        }
+        else if(i == 2) {           // yellow
+            textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            textView.setTextColor(Color.parseColor("#b88940"));
+            toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            toolbar.setTitleTextColor(Color.parseColor("#b88940"));
+        }
+        else if(i == 3) {           // pink
+            textView.setBackgroundColor(Color.parseColor("#fff6ef"));
+            textView.setTextColor(Color.parseColor("#db7d6d"));
+            toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
+            toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
+        }
+        else if(i == 4) {           // night
+            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textView.setTextColor(Color.parseColor("#5b5952"));
+            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
+        }
+    }
+
+    //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
     private void testjson(){
         try{
             final Request request = new Request.Builder()
-                    .url("http://192.168.191.3:8080/jianyue/getArticle.html?json=历史")
+                    .url("http://106.14.154.220:8081/jianyue/getArticle.html?json=历史")
                     .get()
                     .build();
 
@@ -188,15 +227,33 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("hhh");
                     return true;
                 case 1:
+                    //Context mContaxt = new ;
                     System.out.println(msg.obj.toString());
-                    text = LJson;
-                    list = GsonRead.getGson(text);
-                    Title = list.get(0);
-                    Auther = list.get(1);
-                    Text = list.get(2);
-                    toolbar.setTitle(Title);
-                    textView.setText(Text);
-                    text = "";
+                    /*text = LJson;
+                    list = GsonRead.getGson(text);//读取 json
+                    Title = list.get(0);        // 标题
+                    Auther = list.get(1);       // 作者 TODO Add textview write author
+                    Text = list.get(2);         // 文章内容
+                    toolbar.setTitle(Title);    // 更改 toolbar 显示的标题
+                    textView.setText(Text);     // 更改文章内容 TODO 文章结尾标志
+                    textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, MainActivity.getResources().getDimensionPixelOffset(R.dimen.text_middle_size));
+                    text = "";*/
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    });
+
+    Handler tshandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what) {
+                case 0:
+                    System.out.println("hhh");
+                    return true;
+                case 1:
+                    System.out.println("hhh");
                     return true;
                 default:
                     return false;
@@ -239,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
                 Text = list.get(2);
                 toolbar.setTitle(Title);
                 textView.setText(Text);
+                textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
                 text = "";
                 break;
             default:
@@ -377,33 +435,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*public String getTag() {
-        Gson gson = new Gson();
-        SharePreference sp = new SharePreference(MainActivity.this);
-        if( sp.getGuWen() ) {
-            jsonTags = gson.toJson("GuWen");
-        }
 
-        if( sp.getLiZhi() ) {
-            jsonTags = gson.toJson("Jishi");
-        }
-
-        if( sp.getYouMo() ) {
-            jsonTags = gson.toJson("YouMo");
-        }
-
-        if( sp.getLiShi() ) {
-            jsonTags = gson.toJson("LiShi");
-        }
-
-        if( sp.getZhenTan() ) {
-            jsonTags = gson.toJson("ZhenTan");
-        }
-
-        if( sp.getQinGan() ) {
-            jsonTags = gson.toJson("QinGan");
-        }
-    }*/
     //初始化样式
     public void init(){
         SharePreference sp = new SharePreference(MainActivity.this);

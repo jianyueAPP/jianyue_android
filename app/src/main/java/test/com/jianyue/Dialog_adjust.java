@@ -43,8 +43,16 @@ public class Dialog_adjust extends DialogFragment {
     RadioButton bt_white,bt_green,bt_yellow,bt_pink;
     ShSwitchView bt_night;
     SwitchMultiButton bt_size;
-
     View dialogView;
+    private xxxlistener xxxlistener;
+
+    public interface xxxlistener{
+        public void test(int i);
+        public void color(int i);
+    }
+    public void setXxxlistener(xxxlistener xxxlistener){
+        this.xxxlistener = xxxlistener;
+    }
 
     @Override
     public void onStart() {
@@ -92,6 +100,7 @@ public class Dialog_adjust extends DialogFragment {
                 }
                 //把字号写入缓存
                 sp.setSize(i);
+                xxxlistener.test(i);
             }
         });
 
@@ -150,19 +159,21 @@ public class Dialog_adjust extends DialogFragment {
                     sp1.setGreenFalse();
                     sp1.setYellowFalse();
                     sp1.setPinkFalse();
+                    xxxlistener.color(0);
                 }
                 if(R.id.bt_green==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenTrue();
                     sp1.setYellowFalse();
                     sp1.setPinkFalse();
-                    //textView.setBackgroundColor(Color.parseColor("#8bdf72"));
+                    xxxlistener.color(1);
                 }
                 if(R.id.bt_yellow==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenFalse();
                     sp1.setYellowTrue();
                     sp1.setPinkFalse();
+                    xxxlistener.color(2);
 
                 }
                 if(R.id.bt_pink==i){
@@ -170,6 +181,7 @@ public class Dialog_adjust extends DialogFragment {
                     sp1.setGreenFalse();
                     sp1.setYellowFalse();
                     sp1.setPinkTrue();
+                    xxxlistener.color(3);
                 }
             }
         });
@@ -180,6 +192,7 @@ public class Dialog_adjust extends DialogFragment {
             public void onSwitchStateChange(boolean isOn) {
                 if(isOn){
                     sp1.setNightTrue();
+                    xxxlistener.color(4);
                 }
                 else{
                     sp1.setNightFalse();
