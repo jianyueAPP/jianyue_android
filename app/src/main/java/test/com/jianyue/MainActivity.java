@@ -2,7 +2,9 @@
 
 package test.com.jianyue;
 
+
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.MeiWen1)
     CheckBox MeiWen1;
     @BindView(R.id.QinGan1)
@@ -83,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView bt_settings;
+    Toolbar toolbar;
+    public float textSize=7;
 
     public static final String DIALOG_TAG_2 = "dialog2";
 
@@ -90,19 +91,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //开启一个线程，做联网操作
-
         ButterKnife.bind(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);//toolbar导入
-        setSupportActionBar(toolbar);
+        //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
         scrollView=findViewById(R.id.scrollView);
         bt_settings=findViewById(R.id.setting);
+        toolbar = findViewById(R.id.toolbar);//toolbar导入
+        setSupportActionBar(toolbar);//toolbar绑定为actionbar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把标签按钮绑定
+            actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把返回键和标签按钮绑定
         }
+        //初始化样式
+        init();
+        //调用按键设置
         set_checkout();
+        //点击更多设置按钮
         bt_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,12 +279,12 @@ public class MainActivity extends AppCompatActivity {
     //读取SharedPreference，赋值给checkbox兴趣标签,复选框按键功能，把复选框的内容记录到shareperference
     public void set_checkout() {
         //读取SharedPreference，赋值给checkbox兴趣标签
-        CheckBox meiwen1 = (CheckBox) findViewById(R.id.MeiWen1);
-        CheckBox qingan1 = (CheckBox) findViewById(R.id.QinGan1);
-        CheckBox zhentan1 = (CheckBox) findViewById(R.id.ZhenTan1);
-        CheckBox lishi1 = (CheckBox) findViewById(R.id.LiShi1);
-        CheckBox lizhi1 = (CheckBox) findViewById(R.id.LiZhi1);
-        CheckBox youmo1 = (CheckBox) findViewById(R.id.YouMo1);
+        CheckBox meiwen1 =  findViewById(R.id.MeiWen1);
+        CheckBox qingan1 =  findViewById(R.id.QinGan1);
+        CheckBox zhentan1 =  findViewById(R.id.ZhenTan1);
+        CheckBox lishi1 = findViewById(R.id.LiShi1);
+        CheckBox lizhi1 =  findViewById(R.id.LiZhi1);
+        CheckBox youmo1 = findViewById(R.id.YouMo1);
         
         SharePreference sp = new SharePreference(MainActivity.this);
         boolean flag = sp.getMeiWen();
@@ -294,7 +299,8 @@ public class MainActivity extends AppCompatActivity {
         lizhi1.setChecked(flag);
         flag = sp.getYouMo();
         youmo1.setChecked(flag);
-        
+
+
 
         //复选框按键功能，把复选框的内容记录到shareperference
         meiwen1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -428,5 +434,54 @@ public class MainActivity extends AppCompatActivity {
             jsonTags = gson.toJson("QinGan");
         }
     }*/
+    //初始化样式
+    public void init(){
+        SharePreference sp = new SharePreference(MainActivity.this);
+        //设置文字和背景颜色
+        if(sp.getNight()){
+            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textView.setTextColor(Color.parseColor("#5b5952"));
+            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
+        }
+        else{
+            if(sp.getWhite()){
+                textView.setBackgroundColor(Color.parseColor("#ffffff"));
+                textView.setTextColor(Color.parseColor("#333333"));
+                toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
+                toolbar.setTitleTextColor(Color.parseColor("#333333"));
+            }
+            if(sp.getGreen()){
+                textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                textView.setTextColor(Color.parseColor("#709a7b"));
+                toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
+            }
+            if(sp.getYellow()){
+                textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                textView.setTextColor(Color.parseColor("#b88940"));
+                toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                toolbar.setTitleTextColor(Color.parseColor("#b88940"));
+            }
+            if(sp.getPink()){
+                textView.setBackgroundColor(Color.parseColor("#fff6ef"));
+                textView.setTextColor(Color.parseColor("#db7d6d"));
+                toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
+                toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
+            }
+        }
+        //设置文字大小
+        int i=sp.getSize();//获取字号
+        if(i==0){
+            textSize=17;//小号
+        }
+        else if(i==1){
+            textSize=20;
+        }
+        else if(i==2){
+            textSize=23;
+        }
+        textView.setTextSize(textSize);
+    }
 
 }
