@@ -2,6 +2,7 @@
 
 package test.com.jianyue;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +41,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
+public class MainActivity extends AppCompatActivity {
 
     /**test**/
-    
+
 
     /**解析 Gson 用到的变量**/
     String text;
@@ -75,45 +80,41 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @BindView(R.id.textView)
     TextView textView;
     private DrawerLayout mDrawerLayout;
-    private ScrollView scorollview;
+    private ScrollView scrollView;
+    private TextView bt_settings;
+    public float textSize=7;
 
-    private GestureDetector mGestureDetector;
-    public MainActivity()
-
-    {
-
-        mGestureDetector = new GestureDetector(this);
-
-    }
     public static final String DIALOG_TAG_2 = "dialog2";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //开启一个线程，做联网操作
-
         ButterKnife.bind(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);//toolbar导入
-        setSupportActionBar(toolbar);
+        //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        scorollview=findViewById(R.id.scrollView);
-        scorollview.setOnTouchListener(this);
-        //scorollview.setFocusable(true);
+        scrollView=findViewById(R.id.scrollView);
+        bt_settings=findViewById(R.id.setting);
+        Toolbar toolbar = findViewById(R.id.toolbar);//toolbar导入
+        setSupportActionBar(toolbar);//toolbar绑定为actionbar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把标签按钮绑定
+            actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_tag);//把返回键和标签按钮绑定
         }
+        //初始化样式
+        init();
+        //调用按键设置
         set_checkout();
+        //点击更多设置按钮
+        bt_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                Bottom_Dialog.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+            }
+        });
 
-//        //底部弹窗
-//        Button button1 = (Button) findViewById(R.id.button1);
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
-//            }
-//        });
     }
 
     /*private void postJson() {
@@ -214,23 +215,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         if(jsonTags == null) {
                             System.out.println("runFailed");
                         } else {
-                            //postJson();
-                            testjson();
+//                            //postJson();
+//                            testjson();
                         }
                     }
                 }.start();
-                //text = Util.getJson(MainActivity.this, "TestJson.json");
+                text = Util.getJson(MainActivity.this, "TestJson.json");
                 GsonRead gsonRead;
                 System.out.println(LJson);
                 System.out.println(LJson);
                 //text = LJson;
-                /*list = GsonRead.getGson(text);
+                list = GsonRead.getGson(text);
                 Title = list.get(0);
                 Auther = list.get(1);
                 Text = list.get(2);
                 toolbar.setTitle(Title);
                 textView.setText(Text);
-                text = "";*/
+                text = "";
                 break;
             default:
         }
@@ -240,12 +241,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     //读取SharedPreference，赋值给checkbox兴趣标签,复选框按键功能，把复选框的内容记录到shareperference
     public void set_checkout() {
         //读取SharedPreference，赋值给checkbox兴趣标签
-        CheckBox meiwen1 = (CheckBox) findViewById(R.id.MeiWen1);
-        CheckBox qingan1 = (CheckBox) findViewById(R.id.QinGan1);
-        CheckBox zhentan1 = (CheckBox) findViewById(R.id.ZhenTan1);
-        CheckBox lishi1 = (CheckBox) findViewById(R.id.LiShi1);
-        CheckBox lizhi1 = (CheckBox) findViewById(R.id.LiZhi1);
-        CheckBox youmo1 = (CheckBox) findViewById(R.id.YouMo1);
+        CheckBox meiwen1 =  findViewById(R.id.MeiWen1);
+        CheckBox qingan1 =  findViewById(R.id.QinGan1);
+        CheckBox zhentan1 =  findViewById(R.id.ZhenTan1);
+        CheckBox lishi1 = findViewById(R.id.LiShi1);
+        CheckBox lizhi1 =  findViewById(R.id.LiZhi1);
+        CheckBox youmo1 = findViewById(R.id.YouMo1);
         
         SharePreference sp = new SharePreference(MainActivity.this);
         boolean flag = sp.getMeiWen();
@@ -260,7 +261,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         lizhi1.setChecked(flag);
         flag = sp.getYouMo();
         youmo1.setChecked(flag);
-        
+
+
 
         //复选框按键功能，把复选框的内容记录到shareperference
         meiwen1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -394,71 +396,44 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             jsonTags = gson.toJson("QinGan");
         }
     }*/
-
-    /*
-     * *在onTouch()方法中，我们调用GestureDetector的onTouchEvent()方法，
-     * 将捕捉到的MotionEvent交给GestureDetector * 来分析是否有合适的callback函数来处理用户的手势
-     */
-
-    public boolean onTouch(View v, MotionEvent event)
-    {
-        return mGestureDetector.onTouchEvent(event);
-    }
-
-    // 用户轻触触摸屏，由1个MotionEvent ACTION_DOWN触发
-
-    public boolean onDown(MotionEvent arg0)
-    {
-        Log.i("MyGesture", "onDown");
-        //Toast.makeText(this, "onDown", Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    /*
-     * * 用户轻触触摸屏，尚未松开或拖动，由一个1个MotionEvent ACTION_DOWN触发 *
-     * 注意和onDown()的区别，强调的是没有松开或者拖动的状态
-     */
-
-    public void onShowPress(MotionEvent e)
-    {
-        Log.i("MyGesture", "onShowPress");
-        //Toast.makeText(this, "onShowPress", Toast.LENGTH_SHORT).show();
-    }
-
-    // 用户（轻触触摸屏后）松开，由一个1个MotionEvent ACTION_UP触发
-
-    public boolean onSingleTapUp(MotionEvent e)
-    {
-        Log.i("MyGesture", "onSingleTapUp");
-        //Toast.makeText(this, "onSingleTapUp", Toast.LENGTH_SHORT).show();
-        Bottom_Dialog.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
-        return true;
-    }
-
-    // 用户按下触摸屏、快速移动后松开，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE, 1个ACTION_UP触发
-
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-    {
-        Log.i("MyGesture", "onFling");
-        //Toast.makeText(this, "onFling", Toast.LENGTH_LONG).show();
-        return true;
-    }
-
-    // 用户按下触摸屏，并拖动，由1个MotionEvent ACTION_DOWN, 多个ACTION_MOVE触发
-
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-    {
-        Log.i("MyGesture", "onScroll");
-       // Toast.makeText(this, "onScroll", Toast.LENGTH_LONG).show();
-        return true;
-    }
-
-    // 用户长按触摸屏，由多个MotionEvent ACTION_DOWN触发
-
-    public void onLongPress(MotionEvent e)
-    {
-        Log.i("MyGesture", "onLongPress");
-        //Toast.makeText(this, "onLongPress", Toast.LENGTH_LONG).show();
+    //初始化样式
+    public void init(){
+        SharePreference sp = new SharePreference(MainActivity.this);
+        //设置文字和背景颜色
+        if(sp.getNight()){
+            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textView.setTextColor(Color.parseColor("#5b5952"));
+        }
+        else{
+            if(sp.getWhite()){
+                textView.setBackgroundColor(Color.parseColor("#ffffff"));
+                textView.setTextColor(Color.parseColor("#333333"));
+            }
+            if(sp.getGreen()){
+                textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                textView.setTextColor(Color.parseColor("#709a7b"));
+            }
+            if(sp.getYellow()){
+                textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                textView.setTextColor(Color.parseColor("#b88940"));
+            }
+            if(sp.getPink()){
+                textView.setBackgroundColor(Color.parseColor("#fff6ef"));
+                textView.setTextColor(Color.parseColor("#db7d6d"));
+            }
+        }
+        //设置文字大小
+        int i=sp.getSize();//获取字号
+        if(i==0){
+            textSize=17;
+        }
+        else if(i==1){
+            textSize=20;
+        }
+        else if(i==2){
+            textSize=23;
+        }
+        textView.setTextSize(textSize);
     }
 
 }
