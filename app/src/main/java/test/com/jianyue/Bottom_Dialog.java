@@ -34,9 +34,13 @@ public class Bottom_Dialog extends DialogFragment {
     View dialogView;//底栏的对象
     ImageButton bt_adjustBackground,bt_more;
     CheckBox bt_like;
+    private Dialog_adjust dialog_adjust;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
+    }
+    public void Init(Dialog_adjust dialog_adjust){
+        this.dialog_adjust = dialog_adjust;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class Bottom_Dialog extends DialogFragment {
                 //关闭底栏
                 startDownAnimation(dialogView);
                 //唤醒设置背景字号对话框
-                Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+                dialog_adjust.show(getFragmentManager(), DIALOG_TAG_2);
             }
         });
         //点击收藏按钮

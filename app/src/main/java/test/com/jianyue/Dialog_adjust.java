@@ -43,8 +43,16 @@ public class Dialog_adjust extends DialogFragment {
     RadioButton bt_white,bt_green,bt_yellow,bt_pink;
     ShSwitchView bt_night;
     SwitchMultiButton bt_size;
-
     View dialogView;
+    private xxxlistener xxxlistener;
+
+    public interface xxxlistener{
+        public void test(int i);
+        public void color(int i);
+    }
+    public void setXxxlistener(xxxlistener xxxlistener){
+        this.xxxlistener = xxxlistener;
+    }
 
     @Override
     public void onStart() {
@@ -92,6 +100,7 @@ public class Dialog_adjust extends DialogFragment {
                 }
                 //把字号写入缓存
                 sp.setSize(i);
+                xxxlistener.test(i);
             }
         });
 
@@ -127,15 +136,19 @@ public class Dialog_adjust extends DialogFragment {
         SharePreference sp1 = new SharePreference(Dialog_adjust.this.getActivity());
         if(sp1.getWhite()){
             background_color.check(R.id.bt_white);
+            xxxlistener.color(0);
         }
         if(sp1.getGreen()){
             background_color.check(R.id.bt_green);
+            xxxlistener.color(1);
         }
         if(sp1.getYellow()){
             background_color.check(R.id.bt_yellow);
+            xxxlistener.color(2);
         }
         if(sp1.getPink()){
             background_color.check(R.id.bt_pink);
+            xxxlistener.color(3);
         }
         if(sp1.getNight()){
             bt_night.setOn(true);

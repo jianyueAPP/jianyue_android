@@ -17,6 +17,8 @@ public class Util {
      * @param mContext
      * @return
      */
+
+    // 从asset路径下读取对应文件转String输出
     public static String getJson(Context mContext, String fileName) {
         ///将json数据变成字符串
         StringBuilder stringBuilder = new StringBuilder();
@@ -36,5 +38,6 @@ public class Util {
         return stringBuilder.toString();
     }
 
+    //public
 
 }
