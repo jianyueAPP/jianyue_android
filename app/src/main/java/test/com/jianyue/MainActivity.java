@@ -3,6 +3,7 @@
 package test.com.jianyue;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
-    private TextView bt_settings;
+    private TextView bt_settings,textTitle,textAuthor,barTitle,textFinish;
     Toolbar toolbar;
     ActionBar actionBar;
     public float textSize=7;
@@ -99,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         scrollView=findViewById(R.id.scrollView);
         bt_settings=findViewById(R.id.setting);
+        barTitle=findViewById(R.id.barTitle);
+        textTitle=findViewById(R.id.textTitle);
+        textAuthor=findViewById(R.id.textAuthor);
+        textFinish=findViewById(R.id.textFinish);
         toolbar = findViewById(R.id.toolbar);//toolbar导入
         setSupportActionBar(toolbar);//toolbar绑定为actionbar
         actionBar = getSupportActionBar();
@@ -147,7 +153,70 @@ public class MainActivity extends AppCompatActivity {
                 bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
             }
         });
+        scrollView.setOnTouchListener(new PicOnTouchListener());
 
+    }
+    //OnTouch监听器
+    private class PicOnTouchListener implements View.OnTouchListener {
+        private int lastY = 0;
+        private int touchEventId = -9983761;
+        int[] position=new int[2];
+        @SuppressLint("HandlerLeak")
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                View scroller = (View) msg.obj;
+                if (msg.what == touchEventId) {
+                    if (lastY == scroller.getScrollY()) {
+                        //停止了，此处你的操作业务
+                        textAuthor.getLocationOnScreen(position);
+                        if(position[1]<=170){//作者不在屏幕上
+                            barTitle.setText(Title);
+                            System.out.println("作者距离顶部"+position[1]);
+                        }
+                        else{//作者在屏幕上
+                            barTitle.setText("");
+                            System.out.println("作者距离顶部"+position[1]);
+                        }
+                    } else {
+                        handler.sendMessageDelayed(handler.obtainMessage(touchEventId, scroller), 1);
+                        lastY = scroller.getScrollY();
+                    }
+                }
+            }
+        };
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            int eventAction = event.getAction();
+            int y = (int) event.getRawY();
+            switch (eventAction) {
+                case MotionEvent.ACTION_DOWN:
+                    textAuthor.getLocationOnScreen(position);
+                    if(position[1]<=170){//作者不在屏幕上
+                        barTitle.setText(Title);
+                    }
+                    else{//作者在屏幕上
+                        barTitle.setText("");
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    textAuthor.getLocationOnScreen(position);
+                    if(position[1]<=170){//作者不在屏幕上
+                        barTitle.setText(Title);
+                    }
+                    else{//作者在屏幕上
+                        barTitle.setText("");
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
     }
 
     // 改变字号
@@ -168,13 +237,27 @@ public class MainActivity extends AppCompatActivity {
     public void setColor(int i) {
         System.out.println("Color");
         if(i == 0) {                // white
+            barTitle.setTextColor(Color.parseColor("#333333"));
+            textTitle.setBackgroundColor(Color.parseColor("#ffffff"));
+            textTitle.setTextColor(Color.parseColor("#333333"));
+            textAuthor.setBackgroundColor(Color.parseColor("#ffffff"));
+            textAuthor.setTextColor(Color.parseColor("#333333"));
             textView.setBackgroundColor(Color.parseColor("#ffffff"));
             textView.setTextColor(Color.parseColor("#333333"));
             toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
             toolbar.setTitleTextColor(Color.parseColor("#333333"));
+            textFinish.setBackgroundColor(Color.parseColor("#ffffff"));
+            textFinish.setTextColor(Color.parseColor("#333333"));
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);
         }
         else if(i == 1) {           // green
+            barTitle.setTextColor(Color.parseColor("#709a7b"));
+            textFinish.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            textFinish.setTextColor(Color.parseColor("#709a7b"));
+            textTitle.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            textTitle.setTextColor(Color.parseColor("#709a7b"));
+            textAuthor.setBackgroundColor(Color.parseColor("#f0fdf0"));
+            textAuthor.setTextColor(Color.parseColor("#709a7b"));
             textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
             textView.setTextColor(Color.parseColor("#709a7b"));
             toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
@@ -182,6 +265,13 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
         }
         else if(i == 2) {           // yellow
+            barTitle.setTextColor(Color.parseColor("#b88940"));
+            textFinish.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            textFinish.setTextColor(Color.parseColor("#b88940"));
+            textTitle.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            textTitle.setTextColor(Color.parseColor("#b88940"));
+            textAuthor.setBackgroundColor(Color.parseColor("#f7f7e8"));
+            textAuthor.setTextColor(Color.parseColor("#b88940"));
             textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
             textView.setTextColor(Color.parseColor("#b88940"));
             toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
@@ -189,6 +279,13 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
         }
         else if(i == 3) {           // pink
+            barTitle.setTextColor(Color.parseColor("#db7d6d"));
+            textFinish.setBackgroundColor(Color.parseColor("#fff6ef"));
+            textFinish.setTextColor(Color.parseColor("#db7d6d"));
+            textTitle.setBackgroundColor(Color.parseColor("#fff6ef"));
+            textTitle.setTextColor(Color.parseColor("#db7d6d"));
+            textAuthor.setBackgroundColor(Color.parseColor("#fff6ef"));
+            textAuthor.setTextColor(Color.parseColor("#db7d6d"));
             textView.setBackgroundColor(Color.parseColor("#fff6ef"));
             textView.setTextColor(Color.parseColor("#db7d6d"));
             toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
@@ -196,6 +293,13 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
         }
         else if(i == 4) {           // night
+            barTitle.setTextColor(Color.parseColor("#5b5952"));
+            textFinish.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textFinish.setTextColor(Color.parseColor("#5b5952"));
+            textTitle.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textTitle.setTextColor(Color.parseColor("#5b5952"));
+            textAuthor.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textAuthor.setTextColor(Color.parseColor("#5b5952"));
             textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
             textView.setTextColor(Color.parseColor("#5b5952"));
             toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
@@ -309,8 +413,11 @@ public class MainActivity extends AppCompatActivity {
                 Title = list.get(0);
                 Auther = list.get(1);
                 Text = list.get(2);
-                toolbar.setTitle(Title);
-                textView.setText(Text);
+                scrollView.fullScroll(View.FOCUS_UP);//返回顶部
+                barTitle.setText("");
+                textTitle.setText(Title);//显示正文标题
+                textAuthor.setText(Auther);//显示作者
+                textView.setText(Text);//显示文章内容
                 textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
                 text = "";
                 break;
@@ -318,6 +425,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 
     //读取SharedPreference，赋值给checkbox兴趣标签,复选框按键功能，把复选框的内容记录到shareperference
     public void set_checkout() {
@@ -456,6 +565,13 @@ public class MainActivity extends AppCompatActivity {
         SharePreference sp = new SharePreference(MainActivity.this);
         //设置文字和背景颜色
         if(sp.getNight()){
+            textFinish.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textFinish.setTextColor(Color.parseColor("#5b5952"));
+            barTitle.setTextColor(Color.parseColor("#5b5952"));
+            textTitle.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textTitle.setTextColor(Color.parseColor("#5b5952"));
+            textAuthor.setBackgroundColor(Color.parseColor("#0d0d0b"));
+            textAuthor.setTextColor(Color.parseColor("#5b5952"));
             textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
             textView.setTextColor(Color.parseColor("#5b5952"));
             toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
@@ -463,24 +579,52 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             if(sp.getWhite()){
+                textFinish.setBackgroundColor(Color.parseColor("#ffffff"));
+                textFinish.setTextColor(Color.parseColor("#333333"));
+                barTitle.setTextColor(Color.parseColor("#333333"));
+                textTitle.setBackgroundColor(Color.parseColor("#ffffff"));
+                textTitle.setTextColor(Color.parseColor("#333333"));
+                textAuthor.setBackgroundColor(Color.parseColor("#ffffff"));
+                textAuthor.setTextColor(Color.parseColor("#333333"));
                 textView.setBackgroundColor(Color.parseColor("#ffffff"));
                 textView.setTextColor(Color.parseColor("#333333"));
                 toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
                 toolbar.setTitleTextColor(Color.parseColor("#333333"));
             }
             if(sp.getGreen()){
+                barTitle.setTextColor(Color.parseColor("#709a7b"));
+                textFinish.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                textFinish.setTextColor(Color.parseColor("#709a7b"));
+                textTitle.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                textTitle.setTextColor(Color.parseColor("#709a7b"));
+                textAuthor.setBackgroundColor(Color.parseColor("#f0fdf0"));
+                textAuthor.setTextColor(Color.parseColor("#709a7b"));
                 textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
                 textView.setTextColor(Color.parseColor("#709a7b"));
                 toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
                 toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
             }
             if(sp.getYellow()){
+                barTitle.setTextColor(Color.parseColor("#b88940"));
+                textFinish.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                textFinish.setTextColor(Color.parseColor("#b88940"));
+                textTitle.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                textTitle.setTextColor(Color.parseColor("#b88940"));
+                textAuthor.setBackgroundColor(Color.parseColor("#f7f7e8"));
+                textAuthor.setTextColor(Color.parseColor("#b88940"));
                 textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
                 textView.setTextColor(Color.parseColor("#b88940"));
                 toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
                 toolbar.setTitleTextColor(Color.parseColor("#b88940"));
             }
             if(sp.getPink()){
+                barTitle.setTextColor(Color.parseColor("#db7d6d"));
+                textFinish.setBackgroundColor(Color.parseColor("#fff6ef"));
+                textFinish.setTextColor(Color.parseColor("#db7d6d"));
+                textTitle.setBackgroundColor(Color.parseColor("#fff6ef"));
+                textTitle.setTextColor(Color.parseColor("#db7d6d"));
+                textAuthor.setBackgroundColor(Color.parseColor("#fff6ef"));
+                textAuthor.setTextColor(Color.parseColor("#db7d6d"));
                 textView.setBackgroundColor(Color.parseColor("#fff6ef"));
                 textView.setTextColor(Color.parseColor("#db7d6d"));
                 toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
@@ -489,16 +633,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //设置文字大小
         int i=sp.getSize();//获取字号
-        if(i==0){
-            textSize=17;//小号
-        }
-        else if(i==1){
-            textSize=20;
-        }
-        else if(i==2){
-            textSize=23;
-        }
-        textView.setTextSize(textSize);
+        setsize(i);
     }
 
 }
