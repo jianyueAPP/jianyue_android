@@ -20,15 +20,7 @@
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <TextView
-                android:id="@+id/barTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="50sp"
-                android:layout_marginRight="50sp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="" />
+
         </android.support.v7.widget.Toolbar>
 
         <ScrollView
@@ -49,33 +41,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <TextView
-                    android:id="@+id/textTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="64sp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textSize="23sp"/>
-                <TextView
-                    android:id="@+id/textAuthor"
-                    android:layout_width="match_parent"
-                    android:layout_height="50sp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textSize="17sp"/>
-                <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="9sp"
                     android:paddingRight="7sp"
                     android:lineSpacingMultiplier = "1.5" />
-                <TextView
-                    android:id="@+id/textFinish"
-                    android:layout_width="match_parent"
-                    android:layout_height="48sp"
-                    android:text="全文完"
-                    android:textSize="14sp"
-                    android:gravity="center_horizontal"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="48sp"
