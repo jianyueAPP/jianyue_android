@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setOnTouchListener(new PicOnTouchListener());
 
     }
-    //OnTouch监听器
+    //OnTouch监听器,监听scrollview的滑动，让标题选择显示
     private class PicOnTouchListener implements View.OnTouchListener {
         private int lastY = 0;
         private int touchEventId = -9983761;
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         barTitle.setText("");
                     }
                     break;
-                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_UP://惯性滑动，每隔1ms监听一次
                     handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
                     break;
                 default:
