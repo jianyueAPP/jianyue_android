@@ -1,4 +1,4 @@
-package test.com.jianyue;
+package test.com.jianyue.Json_receive;
 
 import com.google.gson.Gson;
 

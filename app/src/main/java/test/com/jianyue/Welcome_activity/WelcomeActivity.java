@@ -1,9 +1,13 @@
-package test.com.jianyue;
+package test.com.jianyue.Welcome_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import test.com.jianyue.reader_activity.Read_activity.MainActivity;
+import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 public class WelcomeActivity extends AppCompatActivity {
 

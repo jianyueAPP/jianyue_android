@@ -1,6 +1,6 @@
 //存用户数据
 
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;

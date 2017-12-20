@@ -1,4 +1,4 @@
-package test.com.jianyue;
+package test.com.jianyue.Json_receive;
 
 import android.content.Context;
 import android.content.res.AssetManager;

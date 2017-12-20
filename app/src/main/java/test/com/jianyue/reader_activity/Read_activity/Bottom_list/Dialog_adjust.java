@@ -1,10 +1,9 @@
 //设置背景字号菜单
 
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,11 +19,12 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.sevenheaven.iosswitch.ShSwitchView;
 
 import lib.kingja.switchbutton.SwitchMultiButton;
+import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 public class Dialog_adjust extends DialogFragment {
 

@@ -1,6 +1,6 @@
 //阅读器主体
 
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity;
 
 
 import android.annotation.SuppressLint;
@@ -38,6 +38,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import test.com.jianyue.R;
+import test.com.jianyue.Json_receive.GsonRead;
+import test.com.jianyue.Json_receive.Util;
+import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Bottom_Dialog;
+import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Dialog_adjust;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -156,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setOnTouchListener(new PicOnTouchListener());
 
     }
-    //OnTouch监听器
+    //OnTouch监听器,监听scrollview的滑动，让标题选择显示
     private class PicOnTouchListener implements View.OnTouchListener {
         private int lastY = 0;
         private int touchEventId = -9983761;
@@ -168,10 +173,9 @@ public class MainActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 View scroller = (View) msg.obj;
                 if (msg.what == touchEventId) {
-                    if (lastY == scroller.getScrollY()) {
-                        //停止了，此处你的操作业务
+                    if (lastY != scroller.getScrollY()) {//窗口惯性滑动未停止
                         textAuthor.getLocationOnScreen(position);
-                        if(position[1]<=170){//作者不在屏幕上
+                        if(position[1]<=150){//作者不在屏幕上
                             barTitle.setText(Title);
                             System.out.println("作者距离顶部"+position[1]);
                         }
@@ -179,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                             barTitle.setText("");
                             System.out.println("作者距离顶部"+position[1]);
                         }
-                    } else {
                         handler.sendMessageDelayed(handler.obtainMessage(touchEventId, scroller), 1);
                         lastY = scroller.getScrollY();
                     }
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             switch (eventAction) {
                 case MotionEvent.ACTION_DOWN:
                     textAuthor.getLocationOnScreen(position);
-                    if(position[1]<=170){//作者不在屏幕上
+                    if(position[1]<=150){//作者不在屏幕上
                         barTitle.setText(Title);
                     }
                     else{//作者在屏幕上
@@ -202,14 +205,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     textAuthor.getLocationOnScreen(position);
-                    if(position[1]<=170){//作者不在屏幕上
+                    if(position[1]<=150){//作者不在屏幕上
                         barTitle.setText(Title);
                     }
                     else{//作者在屏幕上
                         barTitle.setText("");
                     }
                     break;
-                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_UP://惯性滑动，每隔1ms监听一次
                     handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
                     break;
                 default:
