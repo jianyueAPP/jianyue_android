@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
         setContentView(R.layout.activity_main);
-        //开启一个线程，做联网操作
         ButterKnife.bind(this);
         //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
