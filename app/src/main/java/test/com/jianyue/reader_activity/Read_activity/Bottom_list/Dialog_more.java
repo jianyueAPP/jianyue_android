@@ -1,5 +1,5 @@
 //更多菜单，就是底栏第三个键点击出现的菜单
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
 import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
@@ -15,7 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageButton;
+
+import test.com.jianyue.R;
 
 /**
  * Created by 86758 on 2017/12/13 0013.

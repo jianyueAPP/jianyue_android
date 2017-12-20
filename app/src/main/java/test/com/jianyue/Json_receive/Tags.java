@@ -1,4 +1,4 @@
-package test.com.jianyue;
+package test.com.jianyue.Json_receive;
 
 /**
  * Created by 王国华 on 2017/11/17.

@@ -1,5 +1,5 @@
 //底栏布局,三个按键
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
 import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
@@ -15,11 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import test.com.jianyue.R;
 
 /**
  * Created by 86758 on 2017/12/12 0012.
