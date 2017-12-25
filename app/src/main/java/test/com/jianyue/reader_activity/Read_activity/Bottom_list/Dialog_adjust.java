@@ -1,10 +1,9 @@
 //设置背景字号菜单
 
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,11 +19,12 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.sevenheaven.iosswitch.ShSwitchView;
 
 import lib.kingja.switchbutton.SwitchMultiButton;
+import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 public class Dialog_adjust extends DialogFragment {
 
@@ -43,8 +43,16 @@ public class Dialog_adjust extends DialogFragment {
     RadioButton bt_white,bt_green,bt_yellow,bt_pink;
     ShSwitchView bt_night;
     SwitchMultiButton bt_size;
-
     View dialogView;
+    private xxxlistener xxxlistener;
+
+    public interface xxxlistener{
+        public void test(int i);
+        public void color(int i);
+    }
+    public void setXxxlistener(xxxlistener xxxlistener){
+        this.xxxlistener = xxxlistener;
+    }
 
     @Override
     public void onStart() {
@@ -92,6 +100,7 @@ public class Dialog_adjust extends DialogFragment {
                 }
                 //把字号写入缓存
                 sp.setSize(i);
+                xxxlistener.test(i);
             }
         });
 
@@ -121,6 +130,7 @@ public class Dialog_adjust extends DialogFragment {
         view.startAnimation(slide);
     }
 
+    private int radio_selected=R.id.bt_green;
     //设置按键状态
     public void set_button(){
         //设置RadioButton状态
@@ -150,27 +160,41 @@ public class Dialog_adjust extends DialogFragment {
                     sp1.setGreenFalse();
                     sp1.setYellowFalse();
                     sp1.setPinkFalse();
+                    if(!sp1.getNight()){//如果夜间模式没开的话,就调颜色
+                        xxxlistener.color(0);
+                    }
                 }
                 if(R.id.bt_green==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenTrue();
                     sp1.setYellowFalse();
                     sp1.setPinkFalse();
-                    //textView.setBackgroundColor(Color.parseColor("#8bdf72"));
+                    if(!sp1.getNight()){//如果夜间模式没开的话,就调颜色
+                        xxxlistener.color(1);
+                    }
                 }
                 if(R.id.bt_yellow==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenFalse();
                     sp1.setYellowTrue();
                     sp1.setPinkFalse();
-
+                    if(!sp1.getNight()){//如果夜间模式没开的话,就调颜色
+                        xxxlistener.color(2);
+                    }
                 }
                 if(R.id.bt_pink==i){
                     sp1.setWhiteFalse();
                     sp1.setGreenFalse();
                     sp1.setYellowFalse();
                     sp1.setPinkTrue();
+                    if(!sp1.getNight()){//如果夜间模式没开的话,就调颜色
+                        xxxlistener.color(3);
+                    }
                 }
+                if(!sp1.getNight()){//如果夜间模式是关着的话
+                    bt_night.setOn(false);//关闭夜间模式开关
+                }
+                radio_selected=i;
             }
         });
         //夜间模式监听
@@ -180,9 +204,38 @@ public class Dialog_adjust extends DialogFragment {
             public void onSwitchStateChange(boolean isOn) {
                 if(isOn){
                     sp1.setNightTrue();
+                    xxxlistener.color(4);
                 }
                 else{
                     sp1.setNightFalse();
+                    if(R.id.bt_white==radio_selected){
+                        sp1.setWhiteTrue();
+                        sp1.setGreenFalse();
+                        sp1.setYellowFalse();
+                        sp1.setPinkFalse();
+                        xxxlistener.color(0);
+                    }
+                    if(R.id.bt_green==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenTrue();
+                        sp1.setYellowFalse();
+                        sp1.setPinkFalse();
+                        xxxlistener.color(1);
+                    }
+                    if(R.id.bt_yellow==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenFalse();
+                        sp1.setYellowTrue();
+                        sp1.setPinkFalse();
+                        xxxlistener.color(2);
+                    }
+                    if(R.id.bt_pink==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenFalse();
+                        sp1.setYellowFalse();
+                        sp1.setPinkTrue();
+                        xxxlistener.color(3);
+                    }
                 }
             }
         });

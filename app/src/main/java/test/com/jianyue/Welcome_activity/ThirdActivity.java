@@ -1,6 +1,6 @@
 //第三个引导页
 
-package test.com.jianyue;
+package test.com.jianyue.Welcome_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import test.com.jianyue.reader_activity.Read_activity.MainActivity;
+import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 
 public class ThirdActivity extends AppCompatActivity {

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#ffffff">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,8 @@
             android:layout_centerVertical="true"
             android:paddingLeft="17sp"
             android:text="@string/ZiHao"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#303336"/>
 
         <lib.kingja.switchbutton.SwitchMultiButton
             android:id="@+id/switchmultibutton"
@@ -33,7 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
             android:padding="16sp"
-            app:selectedColor="#474a4d"
+            app:selectedColor="#303336"
             app:selectedTab="1"
             app:strokeRadius="7sp"
             app:strokeWidth="1dp"
@@ -54,7 +55,8 @@
             android:layout_centerVertical="true"
             android:paddingLeft="17sp"
             android:text="@string/BeiJin"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#303336"/>
         <RadioGroup
             android:id="@+id/background_color"
             android:layout_width="wrap_content"
@@ -103,7 +105,8 @@
             android:layout_centerVertical="true"
             android:paddingLeft="17sp"
             android:text="@string/YeJian"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#303336"/>
 
         <com.sevenheaven.iosswitch.ShSwitchView
             android:id="@+id/switch_Night"

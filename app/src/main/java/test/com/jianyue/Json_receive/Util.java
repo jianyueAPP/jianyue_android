@@ -1,4 +1,4 @@
-package test.com.jianyue;
+package test.com.jianyue.Json_receive;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -17,14 +17,14 @@ public class Util {
      * @param mContext
      * @return
      */
+
+    // 从asset路径下读取对应文件转String输出
     public static String getJson(Context mContext, String fileName) {
         ///将json数据变成字符串
         StringBuilder stringBuilder = new StringBuilder();
         //获取assets资源管理器
         AssetManager assetManager = mContext.getAssets();
         try {
-            //获取assets资源管理器
-            //AssetManager assetManager = mContext.getAssets();
             //通过管理器打开文件并读取
             BufferedReader bf = new BufferedReader(new InputStreamReader(
                     assetManager.open(fileName)));
@@ -38,5 +38,6 @@ public class Util {
         return stringBuilder.toString();
     }
 
+    //public
 
 }

@@ -1,5 +1,5 @@
 //底栏布局,三个按键
-package test.com.jianyue;
+package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
 import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
@@ -15,11 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import test.com.jianyue.R;
 
 /**
  * Created by 86758 on 2017/12/12 0012.
@@ -34,9 +35,13 @@ public class Bottom_Dialog extends DialogFragment {
     View dialogView;//底栏的对象
     ImageButton bt_adjustBackground,bt_more;
     CheckBox bt_like;
+    private Dialog_adjust dialog_adjust;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
+    }
+    public void Init(Dialog_adjust dialog_adjust){
+        this.dialog_adjust = dialog_adjust;
     }
 
     @Override
@@ -70,7 +75,7 @@ public class Bottom_Dialog extends DialogFragment {
                 //关闭底栏
                 startDownAnimation(dialogView);
                 //唤醒设置背景字号对话框
-                Dialog_adjust.newInstance().show(getFragmentManager(), DIALOG_TAG_2);
+                dialog_adjust.show(getFragmentManager(), DIALOG_TAG_2);
             }
         });
         //点击收藏按钮

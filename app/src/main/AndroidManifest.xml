@@ -6,13 +6,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/jianyue_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".Welcome_activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
             <intent-filter>
@@ -21,21 +21,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FirstActivity"
+            android:name=".Welcome_activity.FirstActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
         </activity>
         <activity
-            android:name=".SecondActivity"
+            android:name=".Welcome_activity.SecondActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
         </activity>
         <activity
-            android:name=".ThirdActivity"
+            android:name=".Welcome_activity.ThirdActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".reader_activity.Read_activity.MainActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>
