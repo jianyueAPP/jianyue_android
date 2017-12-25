@@ -63,20 +63,6 @@ public class MainActivity extends AppCompatActivity {
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
-    @BindView(R.id.MeiWen1)
-    CheckBox MeiWen1;
-    @BindView(R.id.QinGan1)
-    CheckBox QinGan1;
-    @BindView(R.id.LiShi1)
-    CheckBox LiShi1;
-    @BindView(R.id.ZhenTan1)
-    CheckBox ZhenTan1;
-    @BindView(R.id.LiZhi1)
-    CheckBox LiZhi1;
-    @BindView(R.id.YouMo1)
-    CheckBox YouMo1;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
     @BindView(R.id.textView)
     TextView textView;
 
@@ -87,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
     public float textSize=7;
+    public int color=0;
 
     public static final String DIALOG_TAG_2 = "dialog2";
 
@@ -146,20 +133,13 @@ public class MainActivity extends AppCompatActivity {
         private int lastY = 0;
         private int touchEventId = -9983761;
         int[] position=new int[2];
-        private float oldX;
-        private float oldY;
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             int eventAction = event.getAction();
             switch (eventAction) {
                 case MotionEvent.ACTION_DOWN:
-                    Log.d("TAG", "ACTION_DOWN.............");
-                    oldX= event.getX();
-                    oldY= event.getY();
-                    System.out.println("按下时X坐标为"+oldX+"，Y坐标为"+oldY);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    Log.d("TAG", "ACTION_MOVE.............");
                     textAuthor.getLocationOnScreen(position);
                     if(position[1]<=150){//作者不在屏幕上
                         barTitle.setText(Title);
@@ -169,14 +149,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    Log.d("TAG", "ACTION_UP.............");
-                    float x=event.getX();
-                    float y=event.getY();
-                    System.out.println("抬起时X坐标为"+x+"，Y坐标为"+y);
-                    if(oldX==x&&oldY==y){
-                        Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
-                        bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
-                    }
                     //惯性滑动，每隔1ms监听一次
                     handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
                     break;
@@ -224,6 +196,9 @@ public class MainActivity extends AppCompatActivity {
 
     //设置字体背景颜色
     public void setColor(int i) {
+        color=i;
+        getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+        invalidateOptionsMenu();
         System.out.println("Color");
         if(i == 0) {                // white
             barTitle.setTextColor(Color.parseColor("#333333"));
@@ -368,53 +343,113 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
-
     //加载toolbar布局
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
+        changeFlashButtonColor(menu);
         return true;
     }
-
+    //动态加载刷新按钮，让它随着背景颜色的变化而变化
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        changeFlashButtonColor(menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    //改变刷新按钮颜色函数
+    public void changeFlashButtonColor(Menu menu){
+        switch (color) {
+            case 0:
+                menu.findItem(R.id.flashWhite).setVisible(true);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 1:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(true);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 2:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(true);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 3:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(true);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 4:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(true);
+                break;
+        }
+    }
     //处理toolbar点击事件
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home://侧边栏
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
-            case R.id.flash://刷新
-                new Thread() {
-                    @Override
-                    public void run() {
-                        if(jsonTags == null) {
-                            System.out.println("runFailed");
-                        } else {
-//                            //postJson();
-//                            testjson();
-                        }
-                    }
-                }.start();
-                text = Util.getJson(MainActivity.this, "TestJson.json");
-                GsonRead gsonRead;
-                System.out.println(LJson);
-                System.out.println(LJson);
-                //text = LJson;
-                list = GsonRead.getGson(text);
-                Title = list.get(0);
-                Auther = list.get(1);
-                Text = list.get(2);
-                scrollView.fullScroll(View.FOCUS_UP);//返回顶部
-                barTitle.setText("");
-                textTitle.setText(Title);//显示正文标题
-                textAuthor.setText(Auther);//显示作者
-                textView.setText(Text);//显示文章内容
-                textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
-                text = "";
+            case R.id.flashWhite://刷新
+                flash_text();
+                break;
+            case R.id.flashNight://刷新
+                flash_text();
+                break;
+            case R.id.flashGreen://刷新
+                flash_text();
+                break;
+            case R.id.flashPink://刷新
+                flash_text();
+                break;
+            case R.id.flashYellow://刷新
+                flash_text();
                 break;
             default:
         }
         return true;
     }
-
+    //刷新功能
+    public void flash_text(){
+        new Thread() {
+            @Override
+            public void run() {
+                if(jsonTags == null) {
+                    System.out.println("runFailed");
+                } else {
+//                            //postJson();
+//                            testjson();
+                }
+            }
+        }.start();
+        text = Util.getJson(MainActivity.this, "TestJson.json");
+        GsonRead gsonRead;
+        System.out.println(LJson);
+        System.out.println(LJson);
+        //text = LJson;
+        list = GsonRead.getGson(text);
+        Title = list.get(0);
+        Auther = list.get(1);
+        Text = list.get(2);
+        scrollView.fullScroll(View.FOCUS_UP);//返回顶部
+        barTitle.setText("");
+        textTitle.setText(Title);//显示正文标题
+        textAuthor.setText(Auther);//显示作者
+        textView.setText(Text);//显示文章内容
+        textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+        text = "";
+    }
 
 
     //读取SharedPreference，赋值给checkbox兴趣标签,复选框按键功能，把复选框的内容记录到shareperference
@@ -519,27 +554,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({R.id.toolbar, R.id.MeiWen1, R.id.QinGan1, R.id.LiShi1, R.id.ZhenTan1, R.id.LiZhi1, R.id.YouMo1, R.id.drawer_layout, R.id.scrollView, R.id.textView})
+    @OnClick({R.id.toolbar, R.id.textView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.toolbar:
                 Toast.makeText(MainActivity.this, "toolbar", Toast.LENGTH_SHORT);
-                break;
-            case R.id.MeiWen1:
-                break;
-            case R.id.QinGan1:
-                break;
-            case R.id.LiShi1:
-                break;
-            case R.id.ZhenTan1:
-                break;
-            case R.id.LiZhi1:
-                break;
-            case R.id.YouMo1:
-                break;
-            case R.id.drawer_layout:
-                break;
-            case R.id.scrollView:
                 break;
             case R.id.textView:
                 //正文点击事件，调出底栏
@@ -564,8 +583,10 @@ public class MainActivity extends AppCompatActivity {
     //初始化样式
     public void init(){
         SharePreference sp = new SharePreference(MainActivity.this);
+
         //设置文字和背景颜色
         if(sp.getNight()){
+            color=4;
             textFinish.setBackgroundColor(Color.parseColor("#0d0d0b"));
             textFinish.setTextColor(Color.parseColor("#5b5952"));
             barTitle.setTextColor(Color.parseColor("#5b5952"));
@@ -580,6 +601,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             if(sp.getWhite()){
+                color=0;
                 textFinish.setBackgroundColor(Color.parseColor("#ffffff"));
                 textFinish.setTextColor(Color.parseColor("#333333"));
                 barTitle.setTextColor(Color.parseColor("#333333"));
@@ -593,6 +615,7 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitleTextColor(Color.parseColor("#333333"));
             }
             if(sp.getGreen()){
+                color=1;
                 barTitle.setTextColor(Color.parseColor("#709a7b"));
                 textFinish.setBackgroundColor(Color.parseColor("#f0fdf0"));
                 textFinish.setTextColor(Color.parseColor("#709a7b"));
@@ -606,6 +629,7 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
             }
             if(sp.getYellow()){
+                color=2;
                 barTitle.setTextColor(Color.parseColor("#b88940"));
                 textFinish.setBackgroundColor(Color.parseColor("#f7f7e8"));
                 textFinish.setTextColor(Color.parseColor("#b88940"));
@@ -619,6 +643,7 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitleTextColor(Color.parseColor("#b88940"));
             }
             if(sp.getPink()){
+                color=3;
                 barTitle.setTextColor(Color.parseColor("#db7d6d"));
                 textFinish.setBackgroundColor(Color.parseColor("#fff6ef"));
                 textFinish.setTextColor(Color.parseColor("#db7d6d"));
@@ -632,6 +657,8 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
             }
         }
+        getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+        invalidateOptionsMenu();
         //设置文字大小
         int i=sp.getSize();//获取字号
         setsize(i);
