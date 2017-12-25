@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
-    private TextView bt_settings,textTitle,textAuthor,barTitle,textFinish;
+    private TextView textTitle,textAuthor,barTitle,textFinish;
     Toolbar toolbar;
     ActionBar actionBar;
     public float textSize=7;
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
         scrollView=findViewById(R.id.scrollView);
-        bt_settings=findViewById(R.id.setting);
         barTitle=findViewById(R.id.barTitle);
         textTitle=findViewById(R.id.textTitle);
         textAuthor=findViewById(R.id.textAuthor);
@@ -137,34 +137,53 @@ public class MainActivity extends AppCompatActivity {
         init();
         //调用按键设置
         set_checkout();
-        //点击更多设置按钮
-        bt_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDrawerLayout.closeDrawers();
-                Dialog_adjust dialog_adjust = Dialog_adjust.newInstance();
-                dialog_adjust.setXxxlistener(new Dialog_adjust.xxxlistener() {
-                    @Override
-                    public void test(int i) {
-                        setsize(i);
-                    }
-                    public void color(int i) {
-                        setColor(i);
-                    }
-                });
-                Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
-                bottom_dialog.Init(dialog_adjust);
-                bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
-            }
-        });
+        //OnTouch监听器
         scrollView.setOnTouchListener(new PicOnTouchListener());
-
     }
     //OnTouch监听器,监听scrollview的滑动，让标题选择显示
     private class PicOnTouchListener implements View.OnTouchListener {
         private int lastY = 0;
         private int touchEventId = -9983761;
         int[] position=new int[2];
+        private float oldX;
+        private float oldY;
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            int eventAction = event.getAction();
+            switch (eventAction) {
+                case MotionEvent.ACTION_DOWN:
+                    Log.d("TAG", "ACTION_DOWN.............");
+                    oldX= event.getX();
+                    oldY= event.getY();
+                    System.out.println("按下时X坐标为"+oldX+"，Y坐标为"+oldY);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    Log.d("TAG", "ACTION_MOVE.............");
+                    textAuthor.getLocationOnScreen(position);
+                    if(position[1]<=150){//作者不在屏幕上
+                        barTitle.setText(Title);
+                    }
+                    else{//作者在屏幕上
+                        barTitle.setText("");
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    Log.d("TAG", "ACTION_UP.............");
+                    float x=event.getX();
+                    float y=event.getY();
+                    System.out.println("抬起时X坐标为"+x+"，Y坐标为"+y);
+                    if(oldX==x&&oldY==y){
+                        Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
+                        bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
+                    }
+                    //惯性滑动，每隔1ms监听一次
+                    handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
         @SuppressLint("HandlerLeak")
         Handler handler = new Handler() {
             @Override
@@ -176,11 +195,9 @@ public class MainActivity extends AppCompatActivity {
                         textAuthor.getLocationOnScreen(position);
                         if(position[1]<=150){//作者不在屏幕上
                             barTitle.setText(Title);
-                            System.out.println("作者距离顶部"+position[1]);
                         }
                         else{//作者在屏幕上
                             barTitle.setText("");
-                            System.out.println("作者距离顶部"+position[1]);
                         }
                         handler.sendMessageDelayed(handler.obtainMessage(touchEventId, scroller), 1);
                         lastY = scroller.getScrollY();
@@ -188,37 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            int eventAction = event.getAction();
-            int y = (int) event.getRawY();
-            switch (eventAction) {
-                case MotionEvent.ACTION_DOWN:
-                    textAuthor.getLocationOnScreen(position);
-                    if(position[1]<=150){//作者不在屏幕上
-                        barTitle.setText(Title);
-                    }
-                    else{//作者在屏幕上
-                        barTitle.setText("");
-                    }
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    textAuthor.getLocationOnScreen(position);
-                    if(position[1]<=150){//作者不在屏幕上
-                        barTitle.setText(Title);
-                    }
-                    else{//作者在屏幕上
-                        barTitle.setText("");
-                    }
-                    break;
-                case MotionEvent.ACTION_UP://惯性滑动，每隔1ms监听一次
-                    handler.sendMessageDelayed(handler.obtainMessage(touchEventId, v), 1);
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        }
     }
 
     // 改变字号
@@ -235,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    //设置字体背景颜色
     public void setColor(int i) {
         System.out.println("Color");
         if(i == 0) {                // white
@@ -555,8 +541,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.scrollView:
                 break;
             case R.id.textView:
-                //Toast.makeText(MainActivity.this, "papapa", Toast.LENGTH_SHORT).show();
-                //System.out.println("你点击了test");
+                //正文点击事件，调出底栏
+                Dialog_adjust dialog_adjust = Dialog_adjust.newInstance();
+                dialog_adjust.setXxxlistener(new Dialog_adjust.xxxlistener() {
+                    @Override
+                    public void test(int i) {
+                        setsize(i);
+                    }
+                    public void color(int i) {
+                        setColor(i);
+                    }
+                });
+                Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
+                bottom_dialog.Init(dialog_adjust);
+                bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
                 break;
         }
     }
