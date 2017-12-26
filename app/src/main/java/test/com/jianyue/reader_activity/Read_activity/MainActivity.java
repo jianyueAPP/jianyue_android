@@ -59,23 +59,19 @@ public class MainActivity extends AppCompatActivity {
     String LJson;
 
     /**okhttp**/
-    public static final String TAG = "MainActivity";
+    public static final String DIALOG_TAG_2 = "dialog2";
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
     @BindView(R.id.textView)
     TextView textView;
-
-
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView textTitle,textAuthor,barTitle,textFinish;
-    Toolbar toolbar;
-    ActionBar actionBar;
+    private Toolbar toolbar;
+    private ActionBar actionBar;
     public float textSize=7;
     public int color=0;
-
-    public static final String DIALOG_TAG_2 = "dialog2";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         int flag= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
+        //调用布局
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //绑定布局和按键
@@ -98,28 +95,7 @@ public class MainActivity extends AppCompatActivity {
         textFinish=findViewById(R.id.textFinish);
         toolbar = findViewById(R.id.toolbar);//toolbar导入
         setSupportActionBar(toolbar);//toolbar绑定为actionbar
-        actionBar = getSupportActionBar();
-        SharePreference sp = new SharePreference(MainActivity.this);
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
-            if(sp.getNight()){
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_tagnight);
-            }
-            else{
-                if(sp.getWhite()){
-                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);//把返回键和标签按钮绑定
-                }
-                else if(sp.getGreen()){
-                    actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
-                }
-                else if(sp.getYellow()){
-                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
-                }
-                else if(sp.getPink()){
-                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
-                }
-            }
-        }
+        actionBar = getSupportActionBar();//启用toolbar
         //初始化样式
         init();
         //调用按键设置
@@ -178,99 +154,210 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-    // 改变字号
+    //初始化时加载toolbar布局
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        changeFlashButtonColor(menu);
+        return true;
+    }
+    //动态加载刷新按钮，让它随着背景颜色的变化而变化
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        changeFlashButtonColor(menu);//调用改变刷新按钮颜色函数
+        return super.onPrepareOptionsMenu(menu);
+    }
+    //改变刷新按钮颜色函数
+    public void changeFlashButtonColor(Menu menu){
+        switch (color) {
+            case 0:
+                menu.findItem(R.id.flashWhite).setVisible(true);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 1:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(true);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 2:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(true);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 3:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(true);
+                menu.findItem(R.id.flashNight).setVisible(false);
+                break;
+            case 4:
+                menu.findItem(R.id.flashWhite).setVisible(false);
+                menu.findItem(R.id.flashGreen).setVisible(false);
+                menu.findItem(R.id.flashYellow).setVisible(false);
+                menu.findItem(R.id.flashPink).setVisible(false);
+                menu.findItem(R.id.flashNight).setVisible(true);
+                break;
+        }
+    }
+    //初始化界面样式
+    public void init(){
+        SharePreference sp = new SharePreference(MainActivity.this);
+        //初始化toolbar的标签按钮样式
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
+            //根据背景颜色显示toolbar的标签颜色
+            if(sp.getNight()){
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_tagnight);//把返回键和标签按钮绑定
+            }
+            else{
+                if(sp.getWhite()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);
+                }
+                else if(sp.getGreen()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
+                }
+                else if(sp.getYellow()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
+                }
+                else if(sp.getPink()){
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
+                }
+            }
+        }
+        //设置文字和背景颜色
+        if(sp.getNight()){
+            color=4;
+            setTextColor(4);
+        }
+        else{
+            if(sp.getWhite()){
+                color=0;
+                setTextColor(0);
+            }
+            if(sp.getGreen()){
+                color=1;
+                setTextColor(1);
+            }
+            if(sp.getYellow()){
+                color=2;
+                setTextColor(2);
+            }
+            if(sp.getPink()){
+                color=3;
+                setTextColor(3);
+            }
+        }
+        //设置toolbar刷新按钮样式
+        getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+        invalidateOptionsMenu();
+        //初始化文字大小
+        int i=sp.getSize();//获取字号
+        setsize(i);
+    }
+    // 设置字体大小
     public void setsize(int i){
-        System.out.println("tests");
         if(i == 0) {
-            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 45);
+            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
         }
         else if(i == 1) {
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 55);
         }
         else if(i == 2) {
-            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 65);
+            textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 63);
         }
     }
-
-    //设置字体背景颜色
+    //调用设置字体背景颜色
     public void setColor(int i) {
         color=i;
+        //改变toolbar刷新按钮颜色
         getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
-        System.out.println("Color");
         if(i == 0) {                // white
-            barTitle.setTextColor(Color.parseColor("#333333"));
-            textTitle.setBackgroundColor(Color.parseColor("#ffffff"));
-            textTitle.setTextColor(Color.parseColor("#333333"));
-            textAuthor.setBackgroundColor(Color.parseColor("#ffffff"));
-            textAuthor.setTextColor(Color.parseColor("#333333"));
-            textView.setBackgroundColor(Color.parseColor("#ffffff"));
-            textView.setTextColor(Color.parseColor("#333333"));
-            toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
-            toolbar.setTitleTextColor(Color.parseColor("#333333"));
-            textFinish.setBackgroundColor(Color.parseColor("#ffffff"));
-            textFinish.setTextColor(Color.parseColor("#333333"));
+            setTextColor(0);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagwhite);
         }
         else if(i == 1) {           // green
-            barTitle.setTextColor(Color.parseColor("#709a7b"));
-            textFinish.setBackgroundColor(Color.parseColor("#f0fdf0"));
-            textFinish.setTextColor(Color.parseColor("#709a7b"));
-            textTitle.setBackgroundColor(Color.parseColor("#f0fdf0"));
-            textTitle.setTextColor(Color.parseColor("#709a7b"));
-            textAuthor.setBackgroundColor(Color.parseColor("#f0fdf0"));
-            textAuthor.setTextColor(Color.parseColor("#709a7b"));
-            textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
-            textView.setTextColor(Color.parseColor("#709a7b"));
-            toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
-            toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
+            setTextColor(1);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_taggreen);
         }
         else if(i == 2) {           // yellow
-            barTitle.setTextColor(Color.parseColor("#b88940"));
-            textFinish.setBackgroundColor(Color.parseColor("#f7f7e8"));
-            textFinish.setTextColor(Color.parseColor("#b88940"));
-            textTitle.setBackgroundColor(Color.parseColor("#f7f7e8"));
-            textTitle.setTextColor(Color.parseColor("#b88940"));
-            textAuthor.setBackgroundColor(Color.parseColor("#f7f7e8"));
-            textAuthor.setTextColor(Color.parseColor("#b88940"));
-            textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
-            textView.setTextColor(Color.parseColor("#b88940"));
-            toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
-            toolbar.setTitleTextColor(Color.parseColor("#b88940"));
+            setTextColor(2);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagyellow);
         }
         else if(i == 3) {           // pink
-            barTitle.setTextColor(Color.parseColor("#db7d6d"));
-            textFinish.setBackgroundColor(Color.parseColor("#fff6ef"));
-            textFinish.setTextColor(Color.parseColor("#db7d6d"));
-            textTitle.setBackgroundColor(Color.parseColor("#fff6ef"));
-            textTitle.setTextColor(Color.parseColor("#db7d6d"));
-            textAuthor.setBackgroundColor(Color.parseColor("#fff6ef"));
-            textAuthor.setTextColor(Color.parseColor("#db7d6d"));
-            textView.setBackgroundColor(Color.parseColor("#fff6ef"));
-            textView.setTextColor(Color.parseColor("#db7d6d"));
-            toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
-            toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
+            setTextColor(3);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagpink);
         }
         else if(i == 4) {           // night
-            barTitle.setTextColor(Color.parseColor("#5b5952"));
-            textFinish.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textFinish.setTextColor(Color.parseColor("#5b5952"));
-            textTitle.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textTitle.setTextColor(Color.parseColor("#5b5952"));
-            textAuthor.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textAuthor.setTextColor(Color.parseColor("#5b5952"));
-            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textView.setTextColor(Color.parseColor("#5b5952"));
-            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
+            setTextColor(4);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_tagnight);
         }
     }
-
+    //处理toolbar点击事件
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://侧边栏
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.flashWhite://刷新
+                flash_text();
+                break;
+            case R.id.flashNight://刷新
+                flash_text();
+                break;
+            case R.id.flashGreen://刷新
+                flash_text();
+                break;
+            case R.id.flashPink://刷新
+                flash_text();
+                break;
+            case R.id.flashYellow://刷新
+                flash_text();
+                break;
+            default:
+        }
+        return true;
+    }
+    //刷新功能
+    public void flash_text(){
+        new Thread() {
+            @Override
+            public void run() {
+                if(jsonTags == null) {
+                    System.out.println("runFailed");
+                } else {
+//                            //postJson();
+//                            testjson();
+                }
+            }
+        }.start();
+        text = Util.getJson(MainActivity.this, "TestJson.json");
+        GsonRead gsonRead;
+        System.out.println(LJson);
+        System.out.println(LJson);
+        //text = LJson;
+        list = GsonRead.getGson(text);
+        Title = list.get(0);
+        Auther = list.get(1);
+        Text = list.get(2);
+        scrollView.fullScroll(View.FOCUS_UP);//返回顶部
+        barTitle.setText("");
+        textTitle.setText(Title);//显示正文标题
+        textAuthor.setText(Auther);//显示作者
+        textView.setText(Text);//显示文章内容
+        textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+        text = "";
+        SharePreference sp = new SharePreference(MainActivity.this);
+        int i=sp.getSize();//获取字号
+        setsize(i);//设置字体大小
+    }
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
     private void testjson(){
         try{
@@ -342,114 +429,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
-    //加载toolbar布局
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        changeFlashButtonColor(menu);
-        return true;
-    }
-    //动态加载刷新按钮，让它随着背景颜色的变化而变化
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        changeFlashButtonColor(menu);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    //改变刷新按钮颜色函数
-    public void changeFlashButtonColor(Menu menu){
-        switch (color) {
-            case 0:
-                menu.findItem(R.id.flashWhite).setVisible(true);
-                menu.findItem(R.id.flashGreen).setVisible(false);
-                menu.findItem(R.id.flashYellow).setVisible(false);
-                menu.findItem(R.id.flashPink).setVisible(false);
-                menu.findItem(R.id.flashNight).setVisible(false);
-                break;
-            case 1:
-                menu.findItem(R.id.flashWhite).setVisible(false);
-                menu.findItem(R.id.flashGreen).setVisible(true);
-                menu.findItem(R.id.flashYellow).setVisible(false);
-                menu.findItem(R.id.flashPink).setVisible(false);
-                menu.findItem(R.id.flashNight).setVisible(false);
-                break;
-            case 2:
-                menu.findItem(R.id.flashWhite).setVisible(false);
-                menu.findItem(R.id.flashGreen).setVisible(false);
-                menu.findItem(R.id.flashYellow).setVisible(true);
-                menu.findItem(R.id.flashPink).setVisible(false);
-                menu.findItem(R.id.flashNight).setVisible(false);
-                break;
-            case 3:
-                menu.findItem(R.id.flashWhite).setVisible(false);
-                menu.findItem(R.id.flashGreen).setVisible(false);
-                menu.findItem(R.id.flashYellow).setVisible(false);
-                menu.findItem(R.id.flashPink).setVisible(true);
-                menu.findItem(R.id.flashNight).setVisible(false);
-                break;
-            case 4:
-                menu.findItem(R.id.flashWhite).setVisible(false);
-                menu.findItem(R.id.flashGreen).setVisible(false);
-                menu.findItem(R.id.flashYellow).setVisible(false);
-                menu.findItem(R.id.flashPink).setVisible(false);
-                menu.findItem(R.id.flashNight).setVisible(true);
-                break;
-        }
-    }
-    //处理toolbar点击事件
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home://侧边栏
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.flashWhite://刷新
-                flash_text();
-                break;
-            case R.id.flashNight://刷新
-                flash_text();
-                break;
-            case R.id.flashGreen://刷新
-                flash_text();
-                break;
-            case R.id.flashPink://刷新
-                flash_text();
-                break;
-            case R.id.flashYellow://刷新
-                flash_text();
-                break;
-            default:
-        }
-        return true;
-    }
-    //刷新功能
-    public void flash_text(){
-        new Thread() {
-            @Override
-            public void run() {
-                if(jsonTags == null) {
-                    System.out.println("runFailed");
-                } else {
-//                            //postJson();
-//                            testjson();
-                }
-            }
-        }.start();
-        text = Util.getJson(MainActivity.this, "TestJson.json");
-        GsonRead gsonRead;
-        System.out.println(LJson);
-        System.out.println(LJson);
-        //text = LJson;
-        list = GsonRead.getGson(text);
-        Title = list.get(0);
-        Auther = list.get(1);
-        Text = list.get(2);
-        scrollView.fullScroll(View.FOCUS_UP);//返回顶部
-        barTitle.setText("");
-        textTitle.setText(Title);//显示正文标题
-        textAuthor.setText(Auther);//显示作者
-        textView.setText(Text);//显示文章内容
-        textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
-        text = "";
-    }
-
 
     //读取SharedPreference，赋值给checkbox兴趣标签,复选框按键功能，把复选框的内容记录到shareperference
     public void set_checkout() {
@@ -578,89 +557,73 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    //初始化样式
-    public void init(){
-        SharePreference sp = new SharePreference(MainActivity.this);
-
-        //设置文字和背景颜色
-        if(sp.getNight()){
-            color=4;
-            textFinish.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textFinish.setTextColor(Color.parseColor("#5b5952"));
-            barTitle.setTextColor(Color.parseColor("#5b5952"));
-            textTitle.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textTitle.setTextColor(Color.parseColor("#5b5952"));
-            textAuthor.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textAuthor.setTextColor(Color.parseColor("#5b5952"));
-            textView.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            textView.setTextColor(Color.parseColor("#5b5952"));
-            toolbar.setBackgroundColor(Color.parseColor("#0d0d0b"));
-            toolbar.setTitleTextColor(Color.parseColor("#5b5952"));
+    //设置字体背景颜色
+    public void setTextColor(int t){
+        if(t==0){
+            textFinish.setBackgroundColor(this.getResources().getColor(R.color.whiteBack));
+            textFinish.setTextColor(this.getResources().getColor(R.color.whiteFont));
+            barTitle.setTextColor(this.getResources().getColor(R.color.whiteFont));
+            textTitle.setBackgroundColor(this.getResources().getColor(R.color.whiteBack));
+            textTitle.setTextColor(this.getResources().getColor(R.color.whiteFont));
+            textAuthor.setBackgroundColor(this.getResources().getColor(R.color.whiteBack));
+            textAuthor.setTextColor(this.getResources().getColor(R.color.whiteFont));
+            textView.setBackgroundColor(this.getResources().getColor(R.color.whiteBack));
+            textView.setTextColor(this.getResources().getColor(R.color.whiteFont));
+            toolbar.setBackgroundColor(this.getResources().getColor(R.color.whiteBack));
+            toolbar.setTitleTextColor(this.getResources().getColor(R.color.whiteFont));
         }
-        else{
-            if(sp.getWhite()){
-                color=0;
-                textFinish.setBackgroundColor(Color.parseColor("#ffffff"));
-                textFinish.setTextColor(Color.parseColor("#333333"));
-                barTitle.setTextColor(Color.parseColor("#333333"));
-                textTitle.setBackgroundColor(Color.parseColor("#ffffff"));
-                textTitle.setTextColor(Color.parseColor("#333333"));
-                textAuthor.setBackgroundColor(Color.parseColor("#ffffff"));
-                textAuthor.setTextColor(Color.parseColor("#333333"));
-                textView.setBackgroundColor(Color.parseColor("#ffffff"));
-                textView.setTextColor(Color.parseColor("#333333"));
-                toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
-                toolbar.setTitleTextColor(Color.parseColor("#333333"));
-            }
-            if(sp.getGreen()){
-                color=1;
-                barTitle.setTextColor(Color.parseColor("#709a7b"));
-                textFinish.setBackgroundColor(Color.parseColor("#f0fdf0"));
-                textFinish.setTextColor(Color.parseColor("#709a7b"));
-                textTitle.setBackgroundColor(Color.parseColor("#f0fdf0"));
-                textTitle.setTextColor(Color.parseColor("#709a7b"));
-                textAuthor.setBackgroundColor(Color.parseColor("#f0fdf0"));
-                textAuthor.setTextColor(Color.parseColor("#709a7b"));
-                textView.setBackgroundColor(Color.parseColor("#f0fdf0"));
-                textView.setTextColor(Color.parseColor("#709a7b"));
-                toolbar.setBackgroundColor(Color.parseColor("#f0fdf0"));
-                toolbar.setTitleTextColor(Color.parseColor("#709a7b"));
-            }
-            if(sp.getYellow()){
-                color=2;
-                barTitle.setTextColor(Color.parseColor("#b88940"));
-                textFinish.setBackgroundColor(Color.parseColor("#f7f7e8"));
-                textFinish.setTextColor(Color.parseColor("#b88940"));
-                textTitle.setBackgroundColor(Color.parseColor("#f7f7e8"));
-                textTitle.setTextColor(Color.parseColor("#b88940"));
-                textAuthor.setBackgroundColor(Color.parseColor("#f7f7e8"));
-                textAuthor.setTextColor(Color.parseColor("#b88940"));
-                textView.setBackgroundColor(Color.parseColor("#f7f7e8"));
-                textView.setTextColor(Color.parseColor("#b88940"));
-                toolbar.setBackgroundColor(Color.parseColor("#f7f7e8"));
-                toolbar.setTitleTextColor(Color.parseColor("#b88940"));
-            }
-            if(sp.getPink()){
-                color=3;
-                barTitle.setTextColor(Color.parseColor("#db7d6d"));
-                textFinish.setBackgroundColor(Color.parseColor("#fff6ef"));
-                textFinish.setTextColor(Color.parseColor("#db7d6d"));
-                textTitle.setBackgroundColor(Color.parseColor("#fff6ef"));
-                textTitle.setTextColor(Color.parseColor("#db7d6d"));
-                textAuthor.setBackgroundColor(Color.parseColor("#fff6ef"));
-                textAuthor.setTextColor(Color.parseColor("#db7d6d"));
-                textView.setBackgroundColor(Color.parseColor("#fff6ef"));
-                textView.setTextColor(Color.parseColor("#db7d6d"));
-                toolbar.setBackgroundColor(Color.parseColor("#fff6ef"));
-                toolbar.setTitleTextColor(Color.parseColor("#db7d6d"));
-            }
+        else if(t==1){
+            barTitle.setTextColor(this.getResources().getColor(R.color.greenFont));
+            textFinish.setBackgroundColor(this.getResources().getColor(R.color.greenBack));
+            textFinish.setTextColor(this.getResources().getColor(R.color.greenFont));
+            textTitle.setBackgroundColor(this.getResources().getColor(R.color.greenBack));
+            textTitle.setTextColor(this.getResources().getColor(R.color.greenFont));
+            textAuthor.setBackgroundColor(this.getResources().getColor(R.color.greenBack));
+            textAuthor.setTextColor(this.getResources().getColor(R.color.greenFont));
+            textView.setBackgroundColor(this.getResources().getColor(R.color.greenBack));
+            textView.setTextColor(this.getResources().getColor(R.color.greenFont));
+            toolbar.setBackgroundColor(this.getResources().getColor(R.color.greenBack));
+            toolbar.setTitleTextColor(this.getResources().getColor(R.color.greenFont));
         }
-        getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
-        invalidateOptionsMenu();
-        //设置文字大小
-        int i=sp.getSize();//获取字号
-        setsize(i);
+        else if(t==2){
+            barTitle.setTextColor(this.getResources().getColor(R.color.yellowFont));
+            textFinish.setBackgroundColor(this.getResources().getColor(R.color.yellowBack));
+            textFinish.setTextColor(this.getResources().getColor(R.color.yellowFont));
+            textTitle.setBackgroundColor(this.getResources().getColor(R.color.yellowBack));
+            textTitle.setTextColor(this.getResources().getColor(R.color.yellowFont));
+            textAuthor.setBackgroundColor(this.getResources().getColor(R.color.yellowBack));
+            textAuthor.setTextColor(this.getResources().getColor(R.color.yellowFont));
+            textView.setBackgroundColor(this.getResources().getColor(R.color.yellowBack));
+            textView.setTextColor(this.getResources().getColor(R.color.yellowFont));
+            toolbar.setBackgroundColor(this.getResources().getColor(R.color.yellowBack));
+            toolbar.setTitleTextColor(this.getResources().getColor(R.color.yellowFont));
+        }
+        else if(t==3){
+            barTitle.setTextColor(this.getResources().getColor(R.color.pinkFont));
+            textFinish.setBackgroundColor(this.getResources().getColor(R.color.pinkBack));
+            textFinish.setTextColor(this.getResources().getColor(R.color.pinkFont));
+            textTitle.setBackgroundColor(this.getResources().getColor(R.color.pinkBack));
+            textTitle.setTextColor(this.getResources().getColor(R.color.pinkFont));
+            textAuthor.setBackgroundColor(this.getResources().getColor(R.color.pinkBack));
+            textAuthor.setTextColor(this.getResources().getColor(R.color.pinkFont));
+            textView.setBackgroundColor(this.getResources().getColor(R.color.pinkBack));
+            textView.setTextColor(this.getResources().getColor(R.color.pinkFont));
+            toolbar.setBackgroundColor(this.getResources().getColor(R.color.pinkBack));
+            toolbar.setTitleTextColor(this.getResources().getColor(R.color.pinkFont));
+        }
+        else if(t==4){
+            textFinish.setBackgroundColor(this.getResources().getColor(R.color.nightBack));
+            textFinish.setTextColor(this.getResources().getColor(R.color.nightFont));
+            barTitle.setTextColor(this.getResources().getColor(R.color.nightFont));
+            textTitle.setBackgroundColor(this.getResources().getColor(R.color.nightBack));
+            textTitle.setTextColor(this.getResources().getColor(R.color.nightFont));
+            textAuthor.setBackgroundColor(this.getResources().getColor(R.color.nightBack));
+            textAuthor.setTextColor(this.getResources().getColor(R.color.nightFont));
+            textView.setBackgroundColor(this.getResources().getColor(R.color.nightBack));
+            textView.setTextColor(this.getResources().getColor(R.color.nightFont));
+            toolbar.setBackgroundColor(this.getResources().getColor(R.color.nightBack));
+            toolbar.setTitleTextColor(this.getResources().getColor(R.color.nightFont));
+        }
     }
 
 }
