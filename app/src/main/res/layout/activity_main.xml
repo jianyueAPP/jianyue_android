@@ -62,19 +62,17 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:textSize="17sp"/>
-                <me.codeboy.android.aligntextview.CBAlignTextView
+                <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="2sp"
-                    cb:punctuationConvert="true"
-                    android:lineSpacingMultiplier = "1.5"
-                    android:textIsSelectable="true"/>
+                    android:padding="7sp"
+                    android:lineSpacingMultiplier = "1.5" />
                 <TextView
                     android:id="@+id/textFinish"
                     android:layout_width="match_parent"
                     android:layout_height="48sp"
-                    android:text="全文完"
+                    android:text="@string/TextFinish"
                     android:textSize="14sp"
                     android:gravity="center_horizontal"/>
                 <TextView

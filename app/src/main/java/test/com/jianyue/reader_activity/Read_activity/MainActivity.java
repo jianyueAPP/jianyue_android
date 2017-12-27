@@ -39,8 +39,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.codeboy.android.aligntextview.CBAlignTextView;
-import me.codeboy.android.aligntextview.util.CBAlignTextViewUtil;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
 import test.com.jianyue.Json_receive.Util;
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
     @BindView(R.id.textView)
-    CBAlignTextView textView;
+    TextView textView;
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView textTitle,textAuthor,barTitle,textFinish;
@@ -266,12 +264,15 @@ public class MainActivity extends AppCompatActivity {
     // 设置字体大小
     public void setsize(int i){
         if(i == 0) {
+            System.out.println("设置字体大小为“小");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
         }
         else if(i == 1) {
+            System.out.println("设置字体大小为“中");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 55);
         }
         else if(i == 2) {
+            System.out.println("设置字体大小为“大");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 63);
         }
     }
