@@ -11,6 +11,8 @@
     <string name="LableText_LiZhi">励志</string>
     <string name="LableText_YouMo">幽默</string>
     <string name="TextFinish">全文完</string>
+    <string name="Suggest_text">请输入您的建议....</string>
+    <string name="sure">提交</string>
     <!--<string name="LableText_JiShi">记事</string>-->
     <string name="LableText_HuanYin">祝您阅读愉快</string>
     <string name="CeBianLan_title">兴趣标签</string>
