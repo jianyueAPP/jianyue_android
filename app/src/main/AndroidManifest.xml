@@ -35,7 +35,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
         </activity>
-        <activity android:name=".reader_activity.Read_activity.MainActivity"
+        <activity
+            android:name=".reader_activity.Read_activity.MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".reader_activity.Read_activity.Bottom_list.SuggestActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>
