@@ -83,7 +83,6 @@ public class Dialog_adjust extends DialogFragment {
         SharePreference sp = new SharePreference(Dialog_adjust.this.getActivity());
         int i=sp.getSize();//获取字号
         bt_size.setSelectedTab(i);
-        xxxlistener.test(i);
         bt_size.setText("小","中","大").setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
             int i;
             SharePreference sp = new SharePreference(Dialog_adjust.this.getActivity());
@@ -104,6 +103,7 @@ public class Dialog_adjust extends DialogFragment {
                 xxxlistener.test(i);
             }
         });
+
         //绑定按键
         background_color=dialogView.findViewById(R.id.background_color);//RadioGroup
         bt_white=dialogView.findViewById(R.id.bt_white);//RadioButton
@@ -111,6 +111,7 @@ public class Dialog_adjust extends DialogFragment {
         bt_yellow=dialogView.findViewById(R.id.bt_yellow);//RadioButton
         bt_pink=dialogView.findViewById(R.id.bt_pink);//RadioButton
         bt_night=dialogView.findViewById(R.id.switch_Night);//夜间模式
+
         //初始化按键的状态
         set_button();
         //开启动画
@@ -118,6 +119,18 @@ public class Dialog_adjust extends DialogFragment {
         return dialogView;
     }
 
+    //开启动画
+    private void startUpAnimation(View view) {
+        Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        slide.setDuration(400);
+        slide.setFillAfter(true);
+        slide.setFillEnabled(true);
+        view.startAnimation(slide);
+    }
+
+    private int radio_selected=R.id.bt_green;
     //设置按键状态
     public void set_button(){
         //设置RadioButton状态
@@ -136,10 +149,6 @@ public class Dialog_adjust extends DialogFragment {
         }
         if(sp1.getNight()){
             bt_night.setOn(true);
-        }
-        //如果夜间模式是关着的话
-        if(!sp1.getNight()){
-            bt_night.setOn(false);//关闭夜间模式开关
         }
         //背景RadioGroup监听
         background_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -182,6 +191,10 @@ public class Dialog_adjust extends DialogFragment {
                         xxxlistener.color(3);
                     }
                 }
+                if(!sp1.getNight()){//如果夜间模式是关着的话
+                    bt_night.setOn(false);//关闭夜间模式开关
+                }
+                radio_selected=i;
             }
         });
         //夜间模式监听
@@ -190,23 +203,37 @@ public class Dialog_adjust extends DialogFragment {
             @Override
             public void onSwitchStateChange(boolean isOn) {
                 if(isOn){
-                    //设置缓存里夜间模式状态为开
                     sp1.setNightTrue();
                     xxxlistener.color(4);
                 }
                 else{
-                    //设置缓存里夜间模式状态为关
                     sp1.setNightFalse();
-                    if(sp1.getWhite()){ //设置背景颜色为缓存中的正常颜色
+                    if(R.id.bt_white==radio_selected){
+                        sp1.setWhiteTrue();
+                        sp1.setGreenFalse();
+                        sp1.setYellowFalse();
+                        sp1.setPinkFalse();
                         xxxlistener.color(0);
                     }
-                    else if(sp1.getGreen()){
+                    if(R.id.bt_green==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenTrue();
+                        sp1.setYellowFalse();
+                        sp1.setPinkFalse();
                         xxxlistener.color(1);
                     }
-                    else if(sp1.getYellow()){
+                    if(R.id.bt_yellow==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenFalse();
+                        sp1.setYellowTrue();
+                        sp1.setPinkFalse();
                         xxxlistener.color(2);
                     }
-                    else if(sp1.getPink()){
+                    if(R.id.bt_pink==radio_selected){
+                        sp1.setWhiteFalse();
+                        sp1.setGreenFalse();
+                        sp1.setYellowFalse();
+                        sp1.setPinkTrue();
                         xxxlistener.color(3);
                     }
                 }
@@ -215,14 +242,4 @@ public class Dialog_adjust extends DialogFragment {
 
     }
 
-    //dialog开启动画
-    private void startUpAnimation(View view) {
-        Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        slide.setDuration(400);
-        slide.setFillAfter(true);
-        slide.setFillEnabled(true);
-        view.startAnimation(slide);
-    }
 }
