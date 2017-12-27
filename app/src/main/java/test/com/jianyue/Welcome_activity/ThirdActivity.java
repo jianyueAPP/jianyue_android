@@ -23,14 +23,14 @@ public class ThirdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.biao_qian);
         //获取控件对象
-        CheckBox meiwen=(CheckBox)findViewById(R.id.MeiWen);
-        CheckBox qingan=(CheckBox)findViewById(R.id.QinGan);
-        CheckBox zhentan=(CheckBox)findViewById(R.id.ZhenTan);
-        CheckBox lishi=(CheckBox)findViewById(R.id.LiShi);
-        CheckBox lizhi=(CheckBox)findViewById(R.id.LiZhi);
-        CheckBox youmo=(CheckBox)findViewById(R.id.YouMo);
+        CheckBox meiwen=findViewById(R.id.MeiWen);
+        CheckBox qingan=findViewById(R.id.QinGan);
+        CheckBox zhentan=findViewById(R.id.ZhenTan);
+        CheckBox lishi=findViewById(R.id.LiShi);
+        CheckBox lizhi=findViewById(R.id.LiZhi);
+        CheckBox youmo=findViewById(R.id.YouMo);
         
-        Button button2=(Button) findViewById(R.id.Next2);
+        Button button2=findViewById(R.id.Next2);
 
 
         //复选框按键功能，把复选框的内容记录到shareperference
@@ -130,9 +130,14 @@ public class ThirdActivity extends AppCompatActivity {
     //初始化后面所用到的按键状态
     public void init(){
         SharePreference sp=new SharePreference(ThirdActivity.this);
-        sp.setYellowTrue();
+        sp.setYellowFalse();
         sp.setWhiteFalse();
-        sp.setGreenFalse();
+        //默认绿色
+        sp.setGreenTrue();
         sp.setPinkFalse();
+        //默认关闭夜间模式
+        sp.setNightFalse();
+        //默认字体大小为“中”
+        sp.setSize(1);
     }
 }

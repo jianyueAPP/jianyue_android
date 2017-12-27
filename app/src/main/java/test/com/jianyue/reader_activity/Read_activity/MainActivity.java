@@ -39,6 +39,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.codeboy.android.aligntextview.CBAlignTextView;
+import me.codeboy.android.aligntextview.util.CBAlignTextViewUtil;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
 import test.com.jianyue.Json_receive.Util;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
 
     @BindView(R.id.textView)
-    TextView textView;
+    CBAlignTextView textView;
     private DrawerLayout mDrawerLayout;
     private ScrollView scrollView;
     private TextView textTitle,textAuthor,barTitle,textFinish;
@@ -453,9 +455,6 @@ public class MainActivity extends AppCompatActivity {
         lizhi1.setChecked(flag);
         flag = sp.getYouMo();
         youmo1.setChecked(flag);
-
-
-
         //复选框按键功能，把复选框的内容记录到shareperference
         meiwen1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -532,6 +531,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //toolbar和textview点击事件
     @OnClick({R.id.toolbar, R.id.textView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -553,6 +553,8 @@ public class MainActivity extends AppCompatActivity {
                 Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
                 bottom_dialog.Init(dialog_adjust);
                 bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
+                break;
+            default:
                 break;
         }
     }
