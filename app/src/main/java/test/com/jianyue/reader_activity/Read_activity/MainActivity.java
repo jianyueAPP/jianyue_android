@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         //设置toolbar刷新按钮样式
         getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
+        flash_text();
         //初始化文字大小
         int i=sp.getSize();//获取字号
         setsize(i);
@@ -411,7 +412,6 @@ public class MainActivity extends AppCompatActivity {
                     Title = list.get(0);
                     Auther = list.get(1);
                     Text = list.get(2);
-                    scrollView.fullScroll(View.FOCUS_UP);//返回顶部
                     barTitle.setText("");
                     textTitle.setText(Title);//显示正文标题
                     textAuthor.setText(Auther);//显示作者
@@ -421,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
                     SharePreference sp = new SharePreference(MainActivity.this);
                     int i=sp.getSize();//获取字号
                     setsize(i);//设置字体大小
+                    scrollView.fullScroll(View.FOCUS_UP);//返回顶部
                     return true;
                 default:
                     return false;
