@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         //设置toolbar刷新按钮样式
         getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
+        flash_text();
         //初始化文字大小
         int i=sp.getSize();//获取字号
         setsize(i);
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("runFailed");
                 } else {
 //                            //postJson();
-//                            testjson();
+                            testjson();
                 }
             }
         }.start();
@@ -346,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LJson);
         System.out.println(LJson);
         //text = LJson;
-        list = GsonRead.getGson(text);
+        /*list = GsonRead.getGson(text);
         Title = list.get(0);
         Auther = list.get(1);
         Text = list.get(2);
@@ -359,13 +360,13 @@ public class MainActivity extends AppCompatActivity {
         text = "";
         SharePreference sp = new SharePreference(MainActivity.this);
         int i=sp.getSize();//获取字号
-        setsize(i);//设置字体大小
+        setsize(i);//设置字体大小*/
     }
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
     private void testjson(){
         try{
             final Request request = new Request.Builder()
-                    .url("http://106.14.154.220:8081/jianyue/getArticle.html?json=历史")
+                    .url("http://106.14.154.220:8081/jianyue/getArticle.html?json=lizhi")
                     .get()
                     .build();
 
@@ -390,6 +391,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // okgo 意见反馈
+    public void Advice() {
+
+    }
+
     Handler mHandler = new Handler(new Handler.Callback(){
         @Override
         public boolean handleMessage(Message msg) {
@@ -401,15 +407,21 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     //Context mContaxt = new ;
                     System.out.println(msg.obj.toString());
-                    /*text = LJson;
-                    list = GsonRead.getGson(text);//读取 json
-                    Title = list.get(0);        // 标题
-                    Auther = list.get(1);       // 作者 TODO Add textview write author
-                    Text = list.get(2);         // 文章内容
-                    toolbar.setTitle(Title);    // 更改 toolbar 显示的标题
-                    textView.setText(Text);     // 更改文章内容 TODO 文章结尾标志
-                    textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, MainActivity.getResources().getDimensionPixelOffset(R.dimen.text_middle_size));
-                    text = "";*/
+                    text = LJson;
+                    list = GsonRead.getGson(text);
+                    Title = list.get(0);
+                    Auther = list.get(1);
+                    Text = list.get(2);
+                    barTitle.setText("");
+                    textTitle.setText(Title);//显示正文标题
+                    textAuthor.setText(Auther);//显示作者
+                    textView.setText(Text);//显示文章内容
+                    textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+                    text = "";
+                    SharePreference sp = new SharePreference(MainActivity.this);
+                    int i=sp.getSize();//获取字号
+                    setsize(i);//设置字体大小
+                    scrollView.fullScroll(View.FOCUS_UP);//返回顶部
                     return true;
                 default:
                     return false;
