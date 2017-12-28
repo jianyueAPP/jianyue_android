@@ -22,6 +22,8 @@ public class SuggestActivity extends AppCompatActivity {
     public EditText editText;
     public ActionBar actionBar;
     public String message;
+    public String link = "http://106.14.154.220:8081/jianyue/getAdvice.html?json=";
+    public String URL;
 
 
     @Override
@@ -47,6 +49,7 @@ public class SuggestActivity extends AppCompatActivity {
                 }
                 else{
                     //把意见发送给服务器
+
                     Toast.makeText(SuggestActivity.this, "反馈成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -414,9 +414,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // okgo 意见反馈
+    // okhttp 意见反馈
     public void Advice() {
+        try{
+            final Request request = new Request.Builder()
+                    .url("http://106.14.154.220:8081/jianyue/getAdvice.html?json=lizhi")
+                    .get()
+                    .build();
 
+            OkHttpClient client = new OkHttpClient();
+            Call mcall = client.newCall(request);
+            mcall.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    mHandler.obtainMessage(3, null).sendToTarget();
+
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    LJson = response.body().string();
+                    //String json = response.body().string();
+                    mHandler.obtainMessage(1, LJson).sendToTarget();
+                }
+            });
+        }catch (Exception e){
+            System.out.println("error!");
+        }
     }
 
     Handler mHandler = new Handler(new Handler.Callback(){
