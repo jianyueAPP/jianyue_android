@@ -8,7 +8,13 @@ public class Articles {
     private String Title;
     private String Author;
     private String Content;
-    private int tag = 0;
+
+    public Articles(String Title,String Author,String Content){
+        super();
+        this.Title=Title;
+        this.Author=Author;
+        this.Content=Content;
+    }
 
     public String getTitle() {
         return Title;
@@ -34,12 +40,5 @@ public class Articles {
         Content = content;
     }
 
-    public int getTag() {
-        return tag;
-    }
-
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
 }
 

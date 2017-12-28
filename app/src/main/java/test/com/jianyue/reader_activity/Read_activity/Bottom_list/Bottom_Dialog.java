@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 /**
  * Created by 86758 on 2017/12/12 0012.
@@ -77,6 +78,11 @@ public class Bottom_Dialog extends DialogFragment {
         bt_adjustBackground=dialogView.findViewById(R.id.bt_adjust_background);
         bt_more=dialogView.findViewById(R.id.bt_more);
         bt_like=dialogView.findViewById(R.id.bt_like);
+        SharePreference sp = new SharePreference(Bottom_Dialog.this.getActivity());
+        if(sp.getLike()){
+            bt_like.setChecked(true);
+            System.out.println("这篇文章已收藏");
+        }
         //点击换背景按钮
         bt_adjustBackground.setOnClickListener(new View.OnClickListener() {
             @Override
