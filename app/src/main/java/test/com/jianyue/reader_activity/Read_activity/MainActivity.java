@@ -4,6 +4,8 @@ package test.com.jianyue.reader_activity.Read_activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +43,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import test.com.jianyue.DataBase.MyOpenHelper;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
 import test.com.jianyue.Json_receive.Util;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String DIALOG_TAG_2 = "dialog2";
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
-    protected List<Articles> articlesList = new ArrayList<Articles>();
+
 
     @BindView(R.id.textView)
     TextView textView;
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar actionBar;
     public float textSize=7;
     public int color=0;
+    MyOpenHelper mOpenHelper;
+    SQLiteDatabase db;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +97,6 @@ public class MainActivity extends AppCompatActivity {
         window.setFlags(flag, flag);
         //调用布局
         setContentView(R.layout.activity_main);
-        initArticles();
-        LikesAdapter adapter = new LikesAdapter(MainActivity.this, R.layout.article_item, articlesList);
-        ListView listView =  findViewById(R.id.listView);
-        listView.setAdapter(adapter);
         ButterKnife.bind(this);
         //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -111,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
         init();
         //调用按键设置
         set_checkout();
+        // 创建MyOpenHelper实例
+        mOpenHelper = new MyOpenHelper(this);
+        // 得到数据库
+        db = mOpenHelper.getWritableDatabase();
         //OnTouch监听器
         scrollView.setOnTouchListener(new PicOnTouchListener());
     }
@@ -372,11 +377,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LJson);
         System.out.println(LJson);
     }
-    //初始化收藏夹数据
-    private void initArticles() {
-        Articles meiwen = new Articles();
-        articlesList.add(meiwen);
-    }
+
 
 
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
@@ -438,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
                     SharePreference sp = new SharePreference(MainActivity.this);
                     int i=sp.getSize();//获取字号
                     setsize(i);//设置字体大小
+                    sp.setLikeFlase();
                     scrollView.fullScroll(View.FOCUS_UP);//返回顶部
                     return true;
                 default:
@@ -583,12 +585,18 @@ public class MainActivity extends AppCompatActivity {
                 Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
                 bottom_dialog.Init(dialog_adjust);
                 bottom_dialog.setlikelistener(new Bottom_Dialog.likelistener() {
+                    SharePreference sp = new SharePreference(MainActivity.this);
                     @Override
                     public void check(boolean i) {
                         if (i) {
                             //save article
+                            Insert();
+                            sp.setLikeTrue();
+                            System.out.println("收藏，加入数据库");
                         } else {
                             //delete article
+                            sp.setLikeFlase();
+                            System.out.println("取消收藏");
                         }
                     }
                 });
@@ -668,6 +676,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 插入数据
+    public void Insert() {
+        ContentValues values = new ContentValues();
+        values.put("Title", Title);
+        values.put("Author", Auther);
+        values.put("Content", Text);
+        db.insert("Articles", null, values);
+        System.out.println(values);
+    }
 }
 
 
