@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Articles;
 
 /**
  * Created by Egbert on 2017/12/28.
