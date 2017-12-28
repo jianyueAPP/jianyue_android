@@ -5,6 +5,7 @@ package test.com.jianyue.reader_activity.Read_activity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import test.com.jianyue.DataBase.Articles_Dao;
 import test.com.jianyue.DataBase.MyOpenHelper;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
@@ -118,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
         db = mOpenHelper.getWritableDatabase();
         //OnTouch监听器
         scrollView.setOnTouchListener(new PicOnTouchListener());
+
+
+
     }
     //OnTouch监听器,监听scrollview的滑动，让标题选择显示
     private class PicOnTouchListener implements View.OnTouchListener {
@@ -590,11 +595,17 @@ public class MainActivity extends AppCompatActivity {
                     public void check(boolean i) {
                         if (i) {
                             //save article
-                            Insert();
+//                            Insert();
                             sp.setLikeTrue();
+                            Articles articles = new Articles(Title,Auther,Text);
+                            Articles_Dao articles_dao = new Articles_Dao(MainActivity.this);
+                            articles_dao.addFavorite(articles);
                             System.out.println("收藏，加入数据库");
                         } else {
                             //delete article
+                            Articles articles = new Articles(Title,Auther,Text);
+                            Articles_Dao articles_dao = new Articles_Dao(MainActivity.this);
+                            articles_dao.deleteFavorite(articles);
                             sp.setLikeFlase();
                             System.out.println("取消收藏");
                         }
@@ -676,15 +687,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 插入数据
-    public void Insert() {
-        ContentValues values = new ContentValues();
-        values.put("Title", Title);
-        values.put("Author", Auther);
-        values.put("Content", Text);
-        db.insert("Articles", null, values);
-        System.out.println(values);
-    }
+//    // 插入数据
+//    public void Insert() {
+//        ContentValues values = new ContentValues();
+//        values.put("Title", Title);
+//        values.put("Author", Auther);
+//        values.put("Content", Text);
+//        db.insert("Articles", null, values);
+//        System.out.println(values);
+//    }
+
+   @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+       super.onActivityResult(requestCode, resultCode, data);
+       if (requestCode==1){
+           if (resultCode == RESULT_OK) {
+               Bundle bundle = data.getExtras();
+               Articles articles = (Articles) bundle.getSerializable("articles");
+               //Toast.makeText(this,articles.getTitle(),Toast.LENGTH_SHORT).show();
+               SharePreference sp = new SharePreference(MainActivity.this);
+               sp.setLikeTrue();
+               barTitle.setText("");
+               Title=articles.getTitle();
+               Auther=articles.getAuthor();
+               Text=articles.getContent();
+               textTitle.setText(Title);//显示正文标题
+               textAuthor.setText(Auther);//显示作者
+               textView.setText(Text);//显示文章内容
+               textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+               text = "";
+               int i=sp.getSize();//获取字号
+               setsize(i);//设置字体大小
+               scrollView.fullScroll(View.FOCUS_UP);//返回顶部
+               return;
+           }
+       }
+   }
 }
 
 

@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import test.com.jianyue.DataBase.Articles_Dao;
 import test.com.jianyue.R;
 import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
@@ -38,6 +39,7 @@ public class Bottom_Dialog extends DialogFragment {
     CheckBox bt_like;
     private Dialog_adjust dialog_adjust;
     private likelistener likelistener;
+    private Articles_Dao articles_dao;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
@@ -100,6 +102,7 @@ public class Bottom_Dialog extends DialogFragment {
                 if(b){
                     Toast.makeText(Bottom_Dialog.this.getActivity(), "已收藏", Toast.LENGTH_SHORT).show();
                     likelistener.check(true);
+
                 }
                 else{
                     Toast.makeText(Bottom_Dialog.this.getActivity(), "取消收藏", Toast.LENGTH_SHORT).show();

@@ -74,8 +74,8 @@ public class Dialog_more extends DialogFragment {
             @Override
             public void onClick(View view) {
                 startDownAnimation(view);
-                Intent intent=new Intent(Dialog_more.this.getActivity(),FavoriteActivity.class);
-                startActivity(intent);
+                Intent intent=new Intent(getActivity(),FavoriteActivity.class);
+                getActivity().startActivityForResult(intent,1);
             }
         });
         //开启动画

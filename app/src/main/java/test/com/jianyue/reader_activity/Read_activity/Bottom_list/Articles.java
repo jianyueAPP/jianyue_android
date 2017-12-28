@@ -1,10 +1,12 @@
 package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
 
+import java.io.Serializable;
+
 /**
  * Created by 86758 on 2017/12/28 0028.
  */
 
-public class Articles {
+public class Articles implements Serializable {
     private String Title;
     private String Author;
     private String Content;
