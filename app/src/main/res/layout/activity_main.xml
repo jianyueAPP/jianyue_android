@@ -152,7 +152,7 @@
             android:maxLines="1"
             android:textSize="20sp" />
 
-        <CheckBox
+        <!--<CheckBox
             android:id="@+id/LiShi1"
             style="@style/check_box"
             android:layout_marginLeft="20sp"
@@ -163,7 +163,7 @@
             android:paddingLeft="55sp"
             android:textColor="@color/drawer_font"
             android:maxLines="1"
-            android:textSize="20sp" />
+            android:textSize="20sp" />-->
 
         <CheckBox
             android:id="@+id/LiZhi1"

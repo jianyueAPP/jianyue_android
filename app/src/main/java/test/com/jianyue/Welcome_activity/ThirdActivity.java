@@ -26,7 +26,7 @@ public class ThirdActivity extends AppCompatActivity {
         CheckBox meiwen=findViewById(R.id.MeiWen);
         CheckBox qingan=findViewById(R.id.QinGan);
         CheckBox zhentan=findViewById(R.id.ZhenTan);
-        CheckBox lishi=findViewById(R.id.LiShi);
+        //CheckBox lishi=findViewById(R.id.LiShi);
         CheckBox lizhi=findViewById(R.id.LiZhi);
         CheckBox youmo=findViewById(R.id.YouMo);
         
@@ -73,7 +73,7 @@ public class ThirdActivity extends AppCompatActivity {
                 }
             }
         });
-        lishi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        /*lishi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
@@ -85,7 +85,7 @@ public class ThirdActivity extends AppCompatActivity {
                     sp.setLiShiFalse();
                 }
             }
-        });
+        });*/
         lizhi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -12,6 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+
 import test.com.jianyue.R;
 
 public class SuggestActivity extends AppCompatActivity {
@@ -50,7 +58,8 @@ public class SuggestActivity extends AppCompatActivity {
                 }
                 else{
                     //把意见发送给服务器
-
+                    URL = link + message;
+                    Advice(URL);
                     Toast.makeText(SuggestActivity.this, "反馈成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -64,5 +73,33 @@ public class SuggestActivity extends AppCompatActivity {
             }
         });
 
+    }
+    // okhttp 意见反馈
+    public void Advice(String URL) {
+        try{
+            final Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+
+            OkHttpClient client = new OkHttpClient();
+            Call mcall = client.newCall(request);
+            mcall.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    //mHandler.obtainMessage(3, null).sendToTarget();
+
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    //LJson = response.body().string();
+                    //String json = response.body().string();
+                    //mHandler.obtainMessage(1, LJson).sendToTarget();
+                }
+            });
+        }catch (Exception e){
+            System.out.println("error!");
+        }
     }
 }

@@ -41,6 +41,7 @@
         android:layout_marginTop="27dp"
         android:gravity="top"
         android:hint="@string/Suggest_text"
+        android:textColorHint="#d8dbde"
         android:padding="12dp"
         android:textColor="#d8dbde"
         app:super_cornerRadius="10dp"

@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (sp.getLiZhi()) {
                         tag = "lizhi";
                     } else if (sp.getLiShi()) {
-                        tag = "lishi";
+                        tag = "lizhi";
                     } else if (sp.getQinGan()) {
                         tag = "qinggan";
                     } else if (sp.getYouMo()) {
@@ -372,8 +372,8 @@ public class MainActivity extends AppCompatActivity {
                     } else if (sp.getZhenTan()) {
                         tag = "zhentan";
                     }
-
-                    testjson();
+                    URL = link + tag;
+                    testjson(URL);
                 }
             }
         }.start();
@@ -386,10 +386,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
-    private void testjson(){
+    private void testjson(String URL){
         try{
             final Request request = new Request.Builder()
-                    .url("http://106.14.154.220:8081/jianyue/getArticle.html?json=lizhi")
+                    .url(URL) //http://106.14.154.220:8081/jianyue/getArticle.html?json=lizhi
                     .get()
                     .build();
 
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox meiwen1 =  findViewById(R.id.MeiWen1);
         CheckBox qingan1 =  findViewById(R.id.QinGan1);
         CheckBox zhentan1 =  findViewById(R.id.ZhenTan1);
-        CheckBox lishi1 = findViewById(R.id.LiShi1);
+        //CheckBox lishi1 = findViewById(R.id.LiShi1);
         CheckBox lizhi1 =  findViewById(R.id.LiZhi1);
         CheckBox youmo1 = findViewById(R.id.YouMo1);
         
@@ -510,8 +510,8 @@ public class MainActivity extends AppCompatActivity {
         qingan1.setChecked(flag);
         flag = sp.getZhenTan();
         zhentan1.setChecked(flag);
-        flag = sp.getLiShi();
-        lishi1.setChecked(flag);
+        //flag = sp.getLiShi();
+        //lishi1.setChecked(flag);
         flag = sp.getLiZhi();
         lizhi1.setChecked(flag);
         flag = sp.getYouMo();
@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        lishi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*lishi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
@@ -564,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
                     sp.setLiShiFalse();
                 }
             }
-        });
+        });*/
         lizhi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
