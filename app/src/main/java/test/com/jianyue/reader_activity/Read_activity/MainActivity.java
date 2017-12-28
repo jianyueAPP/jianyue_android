@@ -581,6 +581,16 @@ public class MainActivity extends AppCompatActivity {
                 });
                 Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
                 bottom_dialog.Init(dialog_adjust);
+                bottom_dialog.setlikelistener(new Bottom_Dialog.likelistener() {
+                    @Override
+                    public void check(boolean i) {
+                        if (i) {
+                            //save article
+                        } else {
+                            //delete article
+                        }
+                    }
+                });
                 bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
                 break;
             default:
