@@ -41,4 +41,12 @@ public class Articles {
     public void setTag(int tag) {
         this.tag = tag;
     }
+
+    public Articles(String title, String author, String content) {
+        super();
+        this.Author = author;
+        this.Content = content;
+        this.Title = title;
+    }
+
 }
