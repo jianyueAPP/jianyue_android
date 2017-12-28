@@ -22,6 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,11 +59,15 @@ public class MainActivity extends AppCompatActivity {
     String Text;
     List<String> list;
     String LJson;
+    String tag;
+    String link = "http://106.14.154.220:8081/jianyue/getArticle.html?json=";
+    String URL;
 
     /**okhttp**/
     public static final String DIALOG_TAG_2 = "dialog2";
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
+    protected List<Articles> articlesList = new ArrayList<Articles>();
 
     @BindView(R.id.textView)
     TextView textView;
@@ -85,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         window.setFlags(flag, flag);
         //调用布局
         setContentView(R.layout.activity_main);
+        initArticles();
+        LikesAdapter adapter = new LikesAdapter(MainActivity.this, R.layout.article_item, articlesList);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
         ButterKnife.bind(this);
         //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -337,8 +347,22 @@ public class MainActivity extends AppCompatActivity {
                 if(jsonTags == null) {
                     System.out.println("runFailed");
                 } else {
-//                            //postJson();
-                            testjson();
+                    SharePreference sp = new SharePreference(MainActivity.this);
+                    if (sp.getMeiWen()) {
+                        tag = "meiwen";
+                    } else if (sp.getLiZhi()) {
+                        tag = "lizhi";
+                    } else if (sp.getLiShi()) {
+                        tag = "lishi";
+                    } else if (sp.getQinGan()) {
+                        tag = "qinggan";
+                    } else if (sp.getYouMo()) {
+                        tag = "youmo";
+                    } else if (sp.getZhenTan()) {
+                        tag = "zhentan";
+                    }
+
+                    testjson();
                 }
             }
         }.start();
@@ -346,22 +370,14 @@ public class MainActivity extends AppCompatActivity {
         GsonRead gsonRead;
         System.out.println(LJson);
         System.out.println(LJson);
-        //text = LJson;
-        /*list = GsonRead.getGson(text);
-        Title = list.get(0);
-        Auther = list.get(1);
-        Text = list.get(2);
-        scrollView.fullScroll(View.FOCUS_UP);//返回顶部
-        barTitle.setText("");
-        textTitle.setText(Title);//显示正文标题
-        textAuthor.setText(Auther);//显示作者
-        textView.setText(Text);//显示文章内容
-        textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
-        text = "";
-        SharePreference sp = new SharePreference(MainActivity.this);
-        int i=sp.getSize();//获取字号
-        setsize(i);//设置字体大小*/
     }
+    //初始化收藏夹数据
+    private void initArticles() {
+        Articles meiwen = new Articles();
+        articlesList.add(meiwen);
+    }
+
+
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
     private void testjson(){
         try{
@@ -642,3 +658,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
+
