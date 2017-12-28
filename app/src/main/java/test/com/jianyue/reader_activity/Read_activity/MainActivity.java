@@ -4,6 +4,9 @@ package test.com.jianyue.reader_activity.Read_activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +38,18 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import test.com.jianyue.DataBase.Articles_Dao;
+import test.com.jianyue.DataBase.MyOpenHelper;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
 import test.com.jianyue.Json_receive.Util;
+import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Articles;
 import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Bottom_Dialog;
 import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Dialog_adjust;
 
@@ -57,11 +65,15 @@ public class MainActivity extends AppCompatActivity {
     String Text;
     List<String> list;
     String LJson;
+    String tag;
+    String link = "http://106.14.154.220:8081/jianyue/getArticle.html?json=";
+    String URL;
 
     /**okhttp**/
     public static final String DIALOG_TAG_2 = "dialog2";
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
+
 
     @BindView(R.id.textView)
     TextView textView;
@@ -72,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar actionBar;
     public float textSize=7;
     public int color=0;
+    MyOpenHelper mOpenHelper;
+    SQLiteDatabase db;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,8 +114,15 @@ public class MainActivity extends AppCompatActivity {
         init();
         //调用按键设置
         set_checkout();
+        // 创建MyOpenHelper实例
+        mOpenHelper = new MyOpenHelper(this);
+        // 得到数据库
+        db = mOpenHelper.getWritableDatabase();
         //OnTouch监听器
         scrollView.setOnTouchListener(new PicOnTouchListener());
+
+
+
     }
     //OnTouch监听器,监听scrollview的滑动，让标题选择显示
     private class PicOnTouchListener implements View.OnTouchListener {
@@ -257,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         //设置toolbar刷新按钮样式
         getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
+        flash_text();
         //初始化文字大小
         int i=sp.getSize();//获取字号
         setsize(i);
@@ -264,12 +286,15 @@ public class MainActivity extends AppCompatActivity {
     // 设置字体大小
     public void setsize(int i){
         if(i == 0) {
+            System.out.println("设置字体大小为“小");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
         }
         else if(i == 1) {
+            System.out.println("设置字体大小为“中");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 55);
         }
         else if(i == 2) {
+            System.out.println("设置字体大小为“大");
             textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 63);
         }
     }
@@ -333,8 +358,22 @@ public class MainActivity extends AppCompatActivity {
                 if(jsonTags == null) {
                     System.out.println("runFailed");
                 } else {
-//                            //postJson();
-//                            testjson();
+                    SharePreference sp = new SharePreference(MainActivity.this);
+                    if (sp.getMeiWen()) {
+                        tag = "meiwen";
+                    } else if (sp.getLiZhi()) {
+                        tag = "lizhi";
+                    } else if (sp.getLiShi()) {
+                        tag = "lizhi";
+                    } else if (sp.getQinGan()) {
+                        tag = "qinggan";
+                    } else if (sp.getYouMo()) {
+                        tag = "youmo";
+                    } else if (sp.getZhenTan()) {
+                        tag = "zhentan";
+                    }
+                    URL = link + tag;
+                    testjson(URL);
                 }
             }
         }.start();
@@ -342,27 +381,44 @@ public class MainActivity extends AppCompatActivity {
         GsonRead gsonRead;
         System.out.println(LJson);
         System.out.println(LJson);
-        //text = LJson;
-        list = GsonRead.getGson(text);
-        Title = list.get(0);
-        Auther = list.get(1);
-        Text = list.get(2);
-        scrollView.fullScroll(View.FOCUS_UP);//返回顶部
-        barTitle.setText("");
-        textTitle.setText(Title);//显示正文标题
-        textAuthor.setText(Auther);//显示作者
-        textView.setText(Text);//显示文章内容
-        textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
-        text = "";
-        SharePreference sp = new SharePreference(MainActivity.this);
-        int i=sp.getSize();//获取字号
-        setsize(i);//设置字体大小
     }
+
+
+
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
-    private void testjson(){
+    private void testjson(String URL){
         try{
             final Request request = new Request.Builder()
-                    .url("http://106.14.154.220:8081/jianyue/getArticle.html?json=历史")
+                    .url(URL) //http://106.14.154.220:8081/jianyue/getArticle.html?json=lizhi
+                    .get()
+                    .build();
+
+            OkHttpClient client = new OkHttpClient();
+            Call mcall = client.newCall(request);
+            mcall.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    mHandler.obtainMessage(3, null).sendToTarget();
+
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    LJson = response.body().string();
+                    //String json = response.body().string();
+                    mHandler.obtainMessage(1, LJson).sendToTarget();
+                }
+            });
+        }catch (Exception e){
+            System.out.println("error!");
+        }
+    }
+
+    // okhttp 意见反馈
+    public void Advice() {
+        try{
+            final Request request = new Request.Builder()
+                    .url("http://106.14.154.220:8081/jianyue/getAdvice.html?json=lizhi")
                     .get()
                     .build();
 
@@ -398,15 +454,22 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     //Context mContaxt = new ;
                     System.out.println(msg.obj.toString());
-                    /*text = LJson;
-                    list = GsonRead.getGson(text);//读取 json
-                    Title = list.get(0);        // 标题
-                    Auther = list.get(1);       // 作者 TODO Add textview write author
-                    Text = list.get(2);         // 文章内容
-                    toolbar.setTitle(Title);    // 更改 toolbar 显示的标题
-                    textView.setText(Text);     // 更改文章内容 TODO 文章结尾标志
-                    textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, MainActivity.getResources().getDimensionPixelOffset(R.dimen.text_middle_size));
-                    text = "";*/
+                    text = LJson;
+                    list = GsonRead.getGson(text);
+                    Title = list.get(0);
+                    Auther = list.get(1);
+                    Text = list.get(2);
+                    barTitle.setText("");
+                    textTitle.setText(Title);//显示正文标题
+                    textAuthor.setText(Auther);//显示作者
+                    textView.setText(Text);//显示文章内容
+                    textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+                    text = "";
+                    SharePreference sp = new SharePreference(MainActivity.this);
+                    int i=sp.getSize();//获取字号
+                    setsize(i);//设置字体大小
+                    sp.setLikeFlase();
+                    scrollView.fullScroll(View.FOCUS_UP);//返回顶部
                     return true;
                 default:
                     return false;
@@ -436,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox meiwen1 =  findViewById(R.id.MeiWen1);
         CheckBox qingan1 =  findViewById(R.id.QinGan1);
         CheckBox zhentan1 =  findViewById(R.id.ZhenTan1);
-        CheckBox lishi1 = findViewById(R.id.LiShi1);
+        //CheckBox lishi1 = findViewById(R.id.LiShi1);
         CheckBox lizhi1 =  findViewById(R.id.LiZhi1);
         CheckBox youmo1 = findViewById(R.id.YouMo1);
         
@@ -447,15 +510,12 @@ public class MainActivity extends AppCompatActivity {
         qingan1.setChecked(flag);
         flag = sp.getZhenTan();
         zhentan1.setChecked(flag);
-        flag = sp.getLiShi();
-        lishi1.setChecked(flag);
+        //flag = sp.getLiShi();
+        //lishi1.setChecked(flag);
         flag = sp.getLiZhi();
         lizhi1.setChecked(flag);
         flag = sp.getYouMo();
         youmo1.setChecked(flag);
-
-
-
         //复选框按键功能，把复选框的内容记录到shareperference
         meiwen1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -493,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        lishi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*lishi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
@@ -504,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
                     sp.setLiShiFalse();
                 }
             }
-        });
+        });*/
         lizhi1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -532,6 +592,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //toolbar和textview点击事件
     @OnClick({R.id.toolbar, R.id.textView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -552,7 +613,31 @@ public class MainActivity extends AppCompatActivity {
                 });
                 Bottom_Dialog bottom_dialog = Bottom_Dialog.newInstance();
                 bottom_dialog.Init(dialog_adjust);
+                bottom_dialog.setlikelistener(new Bottom_Dialog.likelistener() {
+                    SharePreference sp = new SharePreference(MainActivity.this);
+                    @Override
+                    public void check(boolean i) {
+                        if (i) {
+                            //save article
+//                            Insert();
+                            sp.setLikeTrue();
+                            Articles articles = new Articles(Title,Auther,Text);
+                            Articles_Dao articles_dao = new Articles_Dao(MainActivity.this);
+                            articles_dao.addFavorite(articles);
+                            System.out.println("收藏，加入数据库");
+                        } else {
+                            //delete article
+                            Articles articles = new Articles(Title,Auther,Text);
+                            Articles_Dao articles_dao = new Articles_Dao(MainActivity.this);
+                            articles_dao.deleteFavorite(articles);
+                            sp.setLikeFlase();
+                            System.out.println("取消收藏");
+                        }
+                    }
+                });
                 bottom_dialog.show(getFragmentManager(), DIALOG_TAG_2);
+                break;
+            default:
                 break;
         }
     }
@@ -626,4 +711,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+   @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+       super.onActivityResult(requestCode, resultCode, data);
+       if (requestCode==1){
+           if (resultCode == RESULT_OK) {
+               Bundle bundle = data.getExtras();
+               Articles articles = (Articles) bundle.getSerializable("articles");
+               //Toast.makeText(this,articles.getTitle(),Toast.LENGTH_SHORT).show();
+               SharePreference sp = new SharePreference(MainActivity.this);
+               sp.setLikeTrue();
+               barTitle.setText("");
+               Title=articles.getTitle();
+               Auther=articles.getAuthor();
+               Text=articles.getContent();
+               textTitle.setText(Title);//显示正文标题
+               textAuthor.setText(Auther);//显示作者
+               textView.setText(Text);//显示文章内容
+               textView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, 50);
+               text = "";
+               int i=sp.getSize();//获取字号
+               setsize(i);//设置字体大小
+               scrollView.fullScroll(View.FOCUS_UP);//返回顶部
+               return;
+           }
+       }
+   }
 }
+
+

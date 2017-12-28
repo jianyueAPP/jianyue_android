@@ -20,7 +20,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import test.com.jianyue.DataBase.Articles_Dao;
 import test.com.jianyue.R;
+import test.com.jianyue.reader_activity.Read_activity.SharePreference;
 
 /**
  * Created by 86758 on 2017/12/12 0012.
@@ -36,12 +38,22 @@ public class Bottom_Dialog extends DialogFragment {
     ImageButton bt_adjustBackground,bt_more;
     CheckBox bt_like;
     private Dialog_adjust dialog_adjust;
+    private likelistener likelistener;
+    private Articles_Dao articles_dao;
 
     public static Bottom_Dialog newInstance() {
         return new Bottom_Dialog();
     }
     public void Init(Dialog_adjust dialog_adjust){
         this.dialog_adjust = dialog_adjust;
+    }
+
+    public interface likelistener{
+        public void check(boolean i);
+    }
+
+    public void setlikelistener(Bottom_Dialog.likelistener likelistener){
+        this.likelistener = likelistener;
     }
 
     @Override
@@ -68,6 +80,11 @@ public class Bottom_Dialog extends DialogFragment {
         bt_adjustBackground=dialogView.findViewById(R.id.bt_adjust_background);
         bt_more=dialogView.findViewById(R.id.bt_more);
         bt_like=dialogView.findViewById(R.id.bt_like);
+        SharePreference sp = new SharePreference(Bottom_Dialog.this.getActivity());
+        if(sp.getLike()){
+            bt_like.setChecked(true);
+            System.out.println("这篇文章已收藏");
+        }
         //点击换背景按钮
         bt_adjustBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,9 +101,12 @@ public class Bottom_Dialog extends DialogFragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     Toast.makeText(Bottom_Dialog.this.getActivity(), "已收藏", Toast.LENGTH_SHORT).show();
+                    likelistener.check(true);
+
                 }
                 else{
                     Toast.makeText(Bottom_Dialog.this.getActivity(), "取消收藏", Toast.LENGTH_SHORT).show();
+                    likelistener.check(false);
                 }
             }
         });

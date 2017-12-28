@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
 
 public class SharePreference {
 
-    public Context context;
+    private Context context;
     public SharePreference(Context context)
     {
         this.context = context;
@@ -103,6 +103,12 @@ public class SharePreference {
         editor.putInt("Size",i);
         editor.commit();
     }
+    public void setLikeTrue(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("LikeChecked", true);
+        editor.commit();
+    }
 
 
     //设置复选框标签为false，即未选中
@@ -172,6 +178,12 @@ public class SharePreference {
         SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("NightChecked", false);
+        editor.commit();
+    }
+    public void setLikeFlase(){
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("LikeChecked", false);
         editor.commit();
     }
 
@@ -255,6 +267,12 @@ public class SharePreference {
     public int getSize(){
         SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
         int b=sp.getInt("Size",1);
+        return b;
+    }
+    public boolean getLike()
+    {
+        SharedPreferences sp = context.getSharedPreferences("tags_save", Context.MODE_PRIVATE);
+        boolean b = sp.getBoolean("LikeChecked", false);
         return b;
     }
 
