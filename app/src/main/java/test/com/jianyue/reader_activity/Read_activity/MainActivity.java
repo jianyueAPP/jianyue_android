@@ -44,6 +44,7 @@ import butterknife.OnClick;
 import test.com.jianyue.R;
 import test.com.jianyue.Json_receive.GsonRead;
 import test.com.jianyue.Json_receive.Util;
+import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Articles;
 import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Bottom_Dialog;
 import test.com.jianyue.reader_activity.Read_activity.Bottom_list.Dialog_adjust;
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initArticles();
         LikesAdapter adapter = new LikesAdapter(MainActivity.this, R.layout.article_item, articlesList);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView =  findViewById(R.id.listView);
         listView.setAdapter(adapter);
         ButterKnife.bind(this);
         //绑定布局和按键
