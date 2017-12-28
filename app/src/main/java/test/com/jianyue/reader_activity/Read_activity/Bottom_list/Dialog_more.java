@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.Toast;
 
 import test.com.jianyue.R;
 import test.com.jianyue.Welcome_activity.FirstActivity;
@@ -32,7 +33,7 @@ public class Dialog_more extends DialogFragment {
      */
     private static final String TAG = "Dialog_more";
     View dialogView;//底栏的对象
-    public Button bt_suggest,bt_favorite;
+    public Button bt_suggest,bt_favorite,bt_share;
 
     public static Dialog_more newInstance() {
         return new Dialog_more();
@@ -60,6 +61,7 @@ public class Dialog_more extends DialogFragment {
         dialogView = inflater.inflate(R.layout.more_dialog, container, false);
         bt_suggest=dialogView.findViewById(R.id.suggest);
         bt_favorite=dialogView.findViewById(R.id.favorite);
+        bt_share=dialogView.findViewById(R.id.share);
         //点击“意见反馈”按钮
         bt_suggest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,13 @@ public class Dialog_more extends DialogFragment {
                 startDownAnimation(view);
                 Intent intent=new Intent(getActivity(),FavoriteActivity.class);
                 getActivity().startActivityForResult(intent,1);
+            }
+        });
+        //点击“分享”按钮
+        bt_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Dialog_more.this.getActivity(), "审核中...", Toast.LENGTH_SHORT).show();
             }
         });
         //开启动画
