@@ -35,7 +35,8 @@ public class SuggestActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();//启用toolbar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
-            toolbar1.setTitleTextColor(this.getResources().getColor(R.color.colorPrimary));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            toolbar1.setTitleTextColor(this.getResources().getColor(R.color.toolbar_back));
         }
         //提交按钮
         SendButton.setOnClickListener(new View.OnClickListener() {
