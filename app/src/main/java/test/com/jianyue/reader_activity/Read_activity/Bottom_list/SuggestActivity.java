@@ -37,6 +37,7 @@ public class SuggestActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);//把返回键显示出来
             toolbar1.setTitleTextColor(this.getResources().getColor(R.color.colorPrimary));
         }
+        //提交按钮
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +52,7 @@ public class SuggestActivity extends AppCompatActivity {
                 }
             }
         });
+        //返回键
         toolbar1.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
