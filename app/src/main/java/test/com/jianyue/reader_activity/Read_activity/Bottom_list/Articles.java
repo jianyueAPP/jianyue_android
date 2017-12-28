@@ -5,17 +5,24 @@ package test.com.jianyue.reader_activity.Read_activity.Bottom_list;
  */
 
 public class Articles {
+    private int id;
     private String Title;
     private String Author;
     private String Content;
 
-    public Articles(String Title,String Author,String Content){
+    public Articles(int id,String Title,String Author,String Content){
         super();
+        this.id=id;
         this.Title=Title;
         this.Author=Author;
         this.Content=Content;
     }
-
+    public int getid() {
+        return id;
+    }
+    public void setid(int id) {
+        this.id = id;
+    }
     public String getTitle() {
         return Title;
     }

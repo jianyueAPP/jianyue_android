@@ -111,12 +111,17 @@ public class FavoriteActivity extends AppCompatActivity {
     public void Query() {
         Cursor cursor = db.query("Articles", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
-            String title1 = cursor.getString(0);
-            String author1 = cursor.getString(1);
-            String context1 = cursor.getString(2);
-            Articles articles = new Articles(title1, author1, context1);
+            int id=cursor.getInt(cursor.getColumnIndex("id"));
+            String title1 = cursor.getString(cursor.getColumnIndex("Title"));
+            String author1 = cursor.getString(cursor.getColumnIndex("Author"));
+            String context1 = cursor.getString(cursor.getColumnIndex("Content"));
+            Articles articles = new Articles(id,title1, author1, context1);
             articlesList.add(articles);
+            System.out.println("标题"+title1);
+            System.out.println("作者"+author1);
+            System.out.println("文章内容"+context1);
         }
+        db.close();
     }
 //    //初始化收藏夹数据
 //    private void initArticles() {
