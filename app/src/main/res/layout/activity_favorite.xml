@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/drawer_back"
     tools:context="test.com.jianyue.reader_activity.Read_activity.Bottom_list.FavoriteActivity">
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="#1d1f20"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -28,7 +29,7 @@
             android:gravity="center"
             android:text="收藏夹"
             android:textSize="20sp"
-            android:textColor="@color/nightBack"/>
+            android:textColor="#d8dbde"/>
     </FrameLayout>
 
     <ListView

@@ -22,7 +22,11 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
         //创建表
-        db.execSQL("create table Articles(Title integer primary key autoincrement, Author String, Content String )");
+        db.execSQL("create table Articles(" +
+                "id integer primary key autoincrement, " +
+                "Title Text not null," +
+                "Author Text, " +
+                "Content Text not null)");
     }
 
     @Override
