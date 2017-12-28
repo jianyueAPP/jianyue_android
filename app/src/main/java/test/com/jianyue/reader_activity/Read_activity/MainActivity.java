@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String DIALOG_TAG_2 = "dialog2";
     public static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
     String jsonTags = "{\"tag\":[\"ccc\",\"ddd\" ]}";
-    protected List<Articles> articlesList = new ArrayList<Articles>();
+
 
     @BindView(R.id.textView)
     TextView textView;
@@ -91,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
         window.setFlags(flag, flag);
         //调用布局
         setContentView(R.layout.activity_main);
-        initArticles();
-        LikesAdapter adapter = new LikesAdapter(MainActivity.this, R.layout.article_item, articlesList);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+
         ButterKnife.bind(this);
         //绑定布局和按键
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -371,11 +368,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LJson);
         System.out.println(LJson);
     }
-    //初始化收藏夹数据
-    private void initArticles() {
-        Articles meiwen = new Articles();
-        articlesList.add(meiwen);
-    }
+
 
 
     //使用 okhttp 网络获取文章的 Json，LJson 为获取到的 Json，需要进一步读取
