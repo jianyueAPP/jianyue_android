@@ -711,16 +711,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    // 插入数据
-//    public void Insert() {
-//        ContentValues values = new ContentValues();
-//        values.put("Title", Title);
-//        values.put("Author", Auther);
-//        values.put("Content", Text);
-//        db.insert("Articles", null, values);
-//        System.out.println(values);
-//    }
-
    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
        super.onActivityResult(requestCode, resultCode, data);
