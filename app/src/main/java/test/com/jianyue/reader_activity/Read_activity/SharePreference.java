@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
 
 public class SharePreference {
 
-    public Context context;
+    private Context context;
     public SharePreference(Context context)
     {
         this.context = context;
