@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/drawer_back"
     tools:context="test.com.jianyue.reader_activity.Read_activity.Bottom_list.SuggestActivity">
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:id="@+id/toolbar1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="#1d1f20"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -28,7 +29,7 @@
                 android:gravity="center"
                 android:text="@string/suggest"
                 android:textSize="20sp"
-                android:textColor="@color/nightBack"/>
+                android:textColor="#d8dbde"/>
     </FrameLayout>
 
     <com.kingja.supershapeview.SuperShapeEditText
@@ -41,9 +42,9 @@
         android:gravity="top"
         android:hint="@string/Suggest_text"
         android:padding="12dp"
-        android:textColor="@color/nightBack"
+        android:textColor="#d8dbde"
         app:super_cornerRadius="10dp"
-        app:super_strokeColor="#88c2fc"
+        app:super_strokeColor="@color/drawer_font"
         app:super_strokeWidth="2dp" />
 
     <com.kingja.supershapeview.SuperShapeTextView
@@ -59,5 +60,5 @@
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
         app:super_cornerRadius="56dp"
-        app:super_solidColor="#0ca6f9" />
+        app:super_solidColor="#1d1f20" />
 </RelativeLayout>

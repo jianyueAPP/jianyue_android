@@ -133,6 +133,7 @@ public class FavoriteActivity extends AppCompatActivity {
     // 查询数据
     public void Query() {
         Cursor cursor = db.query("Articles", null, null, null, null, null, null);
+
         if(cursor.moveToFirst()){
             do{
                 String title1 = cursor.getString(1);
