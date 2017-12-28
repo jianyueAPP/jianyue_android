@@ -43,7 +43,7 @@
         android:padding="12dp"
         android:textColor="@color/nightBack"
         app:super_cornerRadius="10dp"
-        app:super_strokeColor="#0ca6f9"
+        app:super_strokeColor="#88c2fc"
         app:super_strokeWidth="2dp" />
 
     <com.kingja.supershapeview.SuperShapeTextView

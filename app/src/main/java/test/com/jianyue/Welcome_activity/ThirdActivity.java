@@ -130,10 +130,10 @@ public class ThirdActivity extends AppCompatActivity {
     //初始化后面所用到的按键状态
     public void init(){
         SharePreference sp=new SharePreference(ThirdActivity.this);
-        sp.setYellowFalse();
+        //默认黄色
+        sp.setYellowTrue();
         sp.setWhiteFalse();
-        //默认绿色
-        sp.setGreenTrue();
+        sp.setGreenFalse();
         sp.setPinkFalse();
         //默认关闭夜间模式
         sp.setNightFalse();

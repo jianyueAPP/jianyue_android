@@ -10,12 +10,14 @@
     <color name="purpleEnd">#0e56ff</color>
     <color name="roseStart">#FF6A00</color>
     <color name="roseEnd">#ef0276</color>
-
+    <!--抽屉颜色-->
+    <color name="drawer_back">#2a2a29</color>
+    <color name="drawer_font">#838282</color>
     <!--文字背景颜色-->
     <color name="greenBack">#f0fdf0</color>
     <color name="greenFont">#709a7b</color>
-    <color name="yellowBack">#f7f7e8</color>
-    <color name="yellowFont">#b88940</color>
+    <color name="yellowBack">#ddc69e</color>
+    <color name="yellowFont">#5e422f</color>
     <color name="pinkBack">#fff6ef</color>
     <color name="pinkFont">#db7d6d</color>
     <color name="whiteBack">#ffffff</color>
